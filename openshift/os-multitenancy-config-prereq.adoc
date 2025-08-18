@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-multitenancy-config-prereq.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, Multitenancy, Multi-tenancy 
+summary: Configurazione del multitenancy su Red Hat OpenShift con NetApp 
+---
+= Configurazione
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Di seguito sono riportati i prerequisiti per la configurazione di Multitenancy su Red Hat OpenShift con NetApp.
+
+
+
+== Prerequisiti
+
+* Cluster NetApp ONTAP
+* Cluster Red Hat OpenShift
+* Trident installato sul cluster
+* Postazione di lavoro amministrativa con strumenti tridentctl e oc installati e aggiunti a $PATH
+* Accesso amministrativo a ONTAP
+* Accesso amministratore del cluster al cluster OpenShift
+* Cluster è integrato con Identity Provider
+* Il provider di identità è configurato per distinguere in modo efficiente gli utenti nei diversi team
+

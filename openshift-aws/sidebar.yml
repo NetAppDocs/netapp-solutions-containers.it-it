@@ -1,0 +1,9 @@
+---
+section: openshift-aws
+title: Servizio Red Hat OpenShift su AWS con FSxN
+pdf-filename: Servizio Red Hat OpenShift su AWS con FSxN
+entries:
+- title: Panoramica della soluzione
+  url: "/openshift/os-rosa-solution-overview.html"
+- title: Flussi di lavoro per il servizio OpenShift su AWS
+  url: "/openshift/os-rosa-app-workflows.html"

@@ -1,0 +1,120 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-trident-element-iscsi.html 
+summary:  
+keywords: Trident, Element, Solidfire, iSCSI 
+---
+= Configurazione iSCSI NetApp Element
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Per abilitare l'integrazione Trident con il sistema di storage NetApp Element , è necessario creare un backend che consenta la comunicazione con il sistema di storage tramite il protocollo iSCSI.
+
+. Sono disponibili file di backend di esempio nell'archivio di installazione scaricato in `sample-input` gerarchia delle cartelle.  Per i sistemi NetApp Element che servono iSCSI, copiare il `backend-solidfire.json` file nella directory di lavoro e modificarlo.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ cp sample-input/backends-samples/solidfire/backend-solidfire.json ./
+[netapp-user@rhel7 trident-installer]$ vi ./backend-solidfire.json
+----
++
+.. Modificare l'utente, la password e il valore MVIP su `EndPoint` linea.
+.. Modifica il `SVIP` valore.
++
+[listing]
+----
+ {
+    "version": 1,
+    "storageDriverName": "solidfire-san",
+    "Endpoint": "https://trident:password@172.21.224.150/json-rpc/8.0",
+    "SVIP": "10.61.180.200:3260",
+    "TenantName": "trident",
+    "Types": [{"Type": "Bronze", "Qos": {"minIOPS": 1000, "maxIOPS": 2000, "burstIOPS": 4000}},
+              {"Type": "Silver", "Qos": {"minIOPS": 4000, "maxIOPS": 6000, "burstIOPS": 8000}},
+              {"Type": "Gold", "Qos": {"minIOPS": 6000, "maxIOPS": 8000, "burstIOPS": 10000}}]
+}
+----
+
+
+. Con questo file back-end al suo posto, esegui il seguente comando per creare il tuo primo back-end.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ ./tridentctl -n trident create backend -f backend-solidfire.json
++-------------------------+----------------+--------------------------------------+--------+---------+
+|          NAME           | STORAGE DRIVER |                 UUID                 | STATE  | VOLUMES |
++-------------------------+----------------+--------------------------------------+--------+---------+
+| solidfire_10.61.180.200 | solidfire-san  | b90783ee-e0c9-49af-8d26-3ea87ce2efdf | online |       0 |
++-------------------------+----------------+--------------------------------------+--------+---------+
+----
+. Dopo aver creato il backend, è necessario creare una classe di archiviazione.  Proprio come per il backend, nella cartella sample-inputs è disponibile un file di classe di archiviazione di esempio che può essere modificato per l'ambiente.  Copialo nella directory di lavoro e apporta le modifiche necessarie per riflettere il backend creato.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ cp sample-input/storage-class-samples/storage-class-csi.yaml.templ ./storage-class-basic.yaml
+[netapp-user@rhel7 trident-installer]$ vi storage-class-basic.yaml
+----
+. L'unica modifica che deve essere apportata a questo file è definire il `backendType` valore al nome del driver di archiviazione dal backend appena creato.  Si noti anche il valore del campo nome, a cui si dovrà fare riferimento in un passaggio successivo.
++
+[listing]
+----
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: basic-csi
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "solidfire-san"
+----
++
+
+NOTE: C'è un campo facoltativo chiamato `fsType` che è definito in questo file.  Nei backend iSCSI, questo valore può essere impostato su un tipo di file system Linux specifico (XFS, ext4 e così via) oppure può essere eliminato per consentire a OpenShift di decidere quale file system utilizzare.
+
+. Esegui il `oc` comando per creare la classe di archiviazione.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc create -f storage-class-basic.yaml
+storageclass.storage.k8s.io/basic-csi created
+----
+. Dopo aver creato la classe di archiviazione, è necessario creare la prima richiesta di volume persistente (PVC).  C'è un campione `pvc-basic.yaml` file che può essere utilizzato per eseguire questa azione, anch'esso presente in sample-inputs.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ cp sample-input/pvc-samples/pvc-basic.yaml ./
+[netapp-user@rhel7 trident-installer]$ vi pvc-basic.yaml
+----
+. L'unica modifica che deve essere apportata a questo file è assicurarsi che il `storageClassName` il campo corrisponde a quello appena creato.  La definizione PVC può essere ulteriormente personalizzata in base alle esigenze del carico di lavoro da fornire.
++
+[listing]
+----
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: basic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: basic-csi
+----
+. Creare il PVC emettendo il `oc` comando.  La creazione può richiedere del tempo a seconda delle dimensioni del volume di supporto creato, quindi è possibile osservare il processo mentre viene completato.
++
+[listing]
+----
+[netapp-user@rhel7 trident-installer]$ oc create -f pvc-basic.yaml
+persistentvolumeclaim/basic created
+
+[netapp-user@rhel7 trident-installer]$ oc get pvc
+NAME    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+basic   Bound    pvc-3445b5cc-df24-453d-a1e6-b484e874349d   1Gi        RWO            basic-csi      5s
+----
+

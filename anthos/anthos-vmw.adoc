@@ -1,0 +1,162 @@
+---
+sidebar: sidebar 
+permalink: anthos/anthos-vmw.html 
+keywords: Anthos, VMware vSphere, ESXi, on_prem 
+summary: 'VMware vSphere è una piattaforma di virtualizzazione per la gestione centralizzata di un gran numero di server e reti virtualizzati in esecuzione sull"hypervisor ESXi.' 
+---
+= Cluster Anthos su VMware
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+I cluster Anthos su VMware sono un'estensione di Google Kubernetes Engine distribuita nel data center privato dell'utente finale.  Un'organizzazione può distribuire le stesse applicazioni progettate per essere eseguite nei container di Google Cloud nei cluster Kubernetes in locale.  I cluster Anthos su VMware possono essere distribuiti in un ambiente VMware vSphere esistente nel tuo data center, consentendo di risparmiare sulle spese in conto capitale e di accelerare le operazioni di distribuzione e scalabilità.
+
+L'implementazione dei cluster Anthos su VMware include i seguenti componenti:
+
+* *Postazione di lavoro amministrativa Anthos.*  Un host di distribuzione da cui `gkectl` E `kubectl` è possibile eseguire comandi per distribuire e interagire con le distribuzioni Anthos.
+* *Cluster di amministrazione.*  Il cluster iniziale distribuito durante la configurazione dei cluster Anthos su VMware.  Questo cluster gestisce tutte le azioni del cluster utente subordinato, tra cui distribuzione, ridimensionamento e aggiornamento.
+* *Cluster di utenti.*  Ogni cluster utente viene distribuito con la propria istanza o partizione di bilanciamento del carico, consentendogli di agire come cluster Kubernetes autonomo per singoli utenti o gruppi, contribuendo a ottenere il multi-tenancy completo.
+
+
+Il grafico seguente descrive una distribuzione Anthos-cluster-on-VMware.
+
+image:a-w-n-anthos-controlplanev2-vm-architecture.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+
+
+
+== Benefici
+
+I cluster Anthos su VMware offrono i seguenti vantaggi:
+
+* *Multi-tenancy avanzata.*  A ciascun utente finale può essere assegnato un proprio cluster di utenti, distribuito con le risorse virtuali necessarie per il proprio ambiente di sviluppo.
+* *Risparmio sui costi.*  Gli utenti finali possono ottenere notevoli risparmi sui costi distribuendo più cluster utente nello stesso ambiente fisico e utilizzando le proprie risorse fisiche per le distribuzioni delle applicazioni, anziché effettuare il provisioning delle risorse nel proprio ambiente Google Cloud o su grandi cluster bare-metal.
+* *Sviluppa e poi pubblica.*  Le distribuzioni on-premise possono essere utilizzate mentre le applicazioni sono in fase di sviluppo, consentendo di testare le applicazioni nella privacy di un data center locale prima di renderle disponibili al pubblico nel cloud.
+* *Requisiti di sicurezza.*  I clienti con maggiori preoccupazioni in materia di sicurezza o con set di dati sensibili che non possono essere archiviati nel cloud pubblico possono eseguire le proprie applicazioni in tutta sicurezza nei propri data center, soddisfacendo così i requisiti organizzativi.
+
+
+
+
+== VMware vSphere
+
+VMware vSphere è una piattaforma di virtualizzazione per la gestione centralizzata di un gran numero di server e reti virtualizzati in esecuzione sull'hypervisor ESXi.
+
+Per ulteriori informazioni su VMware vSphere, vedere https://www.vmware.com/products/vsphere.html["Sito web VMware vSphere"^] .
+
+VMware vSphere offre le seguenti funzionalità:
+
+* *Server VMware vCenter.*  VMware vCenter Server fornisce una gestione unificata di tutti gli host e le VM da un'unica console e aggrega il monitoraggio delle prestazioni di cluster, host e VM.
+* *VMware vSphere vMotion.*  VMware vCenter consente di migrare a caldo le VM tra i nodi del cluster su richiesta, senza interruzioni.
+* *vSphere High Availability.*  Per evitare interruzioni in caso di guasti dell'host, VMware vSphere consente di raggruppare gli host e configurarli per un'elevata disponibilità.  Le VM interrotte da un errore dell'host vengono riavviate a breve sugli altri host del cluster, ripristinando i servizi.
+* *Scheduler di risorse distribuite (DRS).*  Un cluster VMware vSphere può essere configurato per bilanciare il carico delle risorse necessarie alle VM che ospita.  Le VM con conflitti di risorse possono essere migrate a caldo su altri nodi del cluster per garantire che siano disponibili risorse sufficienti.
+
+
+
+
+== Requisiti hardware
+
+
+
+=== Calcolare
+
+Google Cloud richiede periodicamente la convalida aggiornata delle piattaforme server dei partner con le nuove versioni di Anthos tramite il programma partner della piattaforma Anthos Ready.  È possibile trovare un elenco delle piattaforme server attualmente convalidate e delle versioni di Anthos supportate https://cloud.google.com/anthos/docs/resources/partner-platforms["Qui"^] .
+
+
+
+=== Sistema operativo
+
+I cluster Anthos su VMware possono essere distribuiti sia negli ambienti vSphere 7 che 8, a seconda delle scelte del cliente, per adattarli alla propria attuale infrastruttura di data center.
+
+La tabella seguente contiene un elenco delle versioni di vSphere utilizzate da NetApp e dai nostri partner per convalidare la soluzione.
+
+|===
+
+
+| Sistema operativo | Pubblicazione | Versioni Anthos 
+
+
+| Centro virtuale | 8.0.1 | 1,28 
+|===
+
+
+=== Hardware aggiuntivo
+
+Per completare l'implementazione di Anthos con NetApp come soluzione completamente convalidata, NetApp e i nostri ingegneri partner hanno testato componenti aggiuntivi del data center per il networking e lo storage.
+
+La tabella seguente contiene informazioni su questi componenti infrastrutturali aggiuntivi.
+
+|===
+| Produttore | Componente hardware 
+
+
+| Mellanox | switch (rete dati) 
+
+
+| Cisco | switch (rete di gestione) 
+
+
+| NetApp | Sistema di archiviazione AFF 
+|===
+
+
+=== Software aggiuntivo
+
+La tabella seguente include un elenco delle versioni software distribuite nell'ambiente di convalida.
+
+|===
+
+
+| Produttore | Nome del software | Versione 
+
+
+| NetApp | ONTAP | 9.12.1 
+
+
+| NetApp | Trident | 24.02.0 
+|===
+Durante la convalida della piattaforma Anthos Ready eseguita da NetApp, l'ambiente di laboratorio è stato creato in base al seguente diagramma, che ci ha consentito di testare più scenari utilizzando vari backend di storage NetApp ONTAP .
+
+image:a-w-n-anthos-128-vsphere8-validation.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+
+
+
+=== Risorse di supporto all'infrastruttura di rete
+
+Prima di implementare Anthos, è necessario predisporre la seguente infrastruttura:
+
+* Almeno un server DNS che fornisca la risoluzione completa dei nomi host, accessibile dalla rete di gestione in banda e dalla rete VM.
+* Almeno un server NTP accessibile dalla rete di gestione in banda e dalla rete VM.
+* Un server DHCP disponibile per fornire lease di indirizzi di rete su richiesta, qualora i cluster debbano essere ridimensionati dinamicamente.
+* (Facoltativo) Connettività Internet in uscita sia per la rete di gestione in banda che per la rete VM.
+
+
+
+
+== Best practice per le distribuzioni di produzione
+
+In questa sezione sono elencate alcune best practice che un'organizzazione dovrebbe prendere in considerazione prima di implementare questa soluzione in produzione.
+
+
+
+=== Distribuisci Anthos su un cluster ESXi di almeno tre nodi
+
+Sebbene sia possibile installare Anthos in un cluster vSphere con meno di tre nodi a scopo dimostrativo o di valutazione, questa soluzione non è consigliata per i carichi di lavoro di produzione.  Sebbene due nodi consentano HA di base e tolleranza agli errori, la configurazione di un cluster Anthos deve essere modificata per disabilitare l'affinità host predefinita e questo metodo di distribuzione non è supportato da Google Cloud.
+
+
+
+=== Configurare l'affinità tra macchina virtuale e host
+
+È possibile distribuire i nodi del cluster Anthos su più nodi hypervisor abilitando l'affinità tra VM e host.
+
+L'affinità o l'anti-affinità è un modo per definire regole per un set di VM e/o host che determinano se le VM vengono eseguite insieme sullo stesso host o sugli stessi host del gruppo oppure su host diversi.  Viene applicato alle VM creando gruppi di affinità costituiti da VM e/o host con un set di parametri e condizioni identici.  A seconda che le VM in un gruppo di affinità vengano eseguite sullo stesso host o sugli stessi host del gruppo oppure separatamente su host diversi, i parametri del gruppo di affinità possono definire un'affinità positiva o negativa.
+
+Per configurare i gruppi di affinità, consultare il collegamento appropriato qui sotto per la versione di VMWare vSphere in uso.
+
+https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentazione di vSphere 6.7: utilizzo delle regole di affinità DRS"^] . https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentazione di vSphere 7.0: utilizzo delle regole di affinità DRS"^] .
+
+
+NOTE: Anthos ha un'opzione di configurazione in ogni singolo `cluster.yaml` file per creare automaticamente regole di affinità dei nodi che possono essere abilitate o disabilitate in base al numero di host ESXi presenti nell'ambiente.

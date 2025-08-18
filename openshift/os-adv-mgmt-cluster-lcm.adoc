@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-adv-mgmt-cluster-lcm.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, ONTAP, Trident, Red Hat OpenShift, Advanced Cluster Management, Advanced Cluster Management for Kubernetes 
+summary: Gestione avanzata dei cluster per Kubernetes su Red Hat OpenShift con NetApp 
+---
+= Gestione del ciclo di vita del cluster
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Per gestire diversi cluster OpenShift, è possibile crearli o importarli in Advanced Cluster Management.
+
+. Per prima cosa vai su Automatizza infrastrutture > Cluster.
+. Per creare un nuovo cluster OpenShift, completare i seguenti passaggi:
++
+.. Creare una connessione al provider: andare su Connessioni provider e fare clic su Aggiungi una connessione, fornire tutti i dettagli corrispondenti al tipo di provider selezionato e fare clic su Aggiungi.
++
+image:redhat-openshift-075.png["Aggiungi connessione al provider"]
+
+.. Per creare un nuovo cluster, vai su Cluster e fai clic su Aggiungi un cluster > Crea un cluster.  Fornire i dettagli per il cluster e il provider corrispondente e fare clic su Crea.
++
+image:redhat-openshift-076.png["Aggiungi cluster"]
+
+.. Dopo la creazione, il cluster viene visualizzato nell'elenco dei cluster con lo stato Pronto.
+
+
+. Per importare un cluster esistente, completare i seguenti passaggi:
++
+.. Vai a Cluster e fai clic su Aggiungi un cluster > Importa un cluster esistente.
+.. Inserisci il nome del cluster e fai clic su Salva importazione e genera codice.  Viene visualizzato un comando per aggiungere il cluster esistente.
+.. Fare clic su Copia comando ed eseguire il comando sul cluster da aggiungere al cluster hub.  In questo modo viene avviata l'installazione degli agenti necessari sul cluster e, una volta completato il processo, il cluster viene visualizzato nell'elenco dei cluster con lo stato Pronto.
++
+image:redhat-openshift-077.png["Importa cluster esistente"]
+
+
+
+. Dopo aver creato e importato più cluster, puoi monitorarli e gestirli da un'unica console.
+

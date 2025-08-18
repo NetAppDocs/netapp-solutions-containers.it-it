@@ -1,0 +1,107 @@
+---
+sidebar: sidebar 
+permalink: anthos/anthos-seesaw-lb.html 
+summary: 'Questa pagina contiene le istruzioni dettagliate per l"installazione e la configurazione del bilanciatore del carico SeeSaw.' 
+keywords: Anthos, GKE, Kubernetes, SeeSaw, LoadBalancer 
+---
+= Installazione dei bilanciatori di carico SeeSaw
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+In questa pagina sono elencate le istruzioni di installazione e configurazione per il bilanciatore del carico gestito SeeSaw.
+
+Seesaw è il bilanciatore del carico di rete gestito predefinito installato in un ambiente Anthos Clusters su VMware dalle versioni 1.6 alla 1.10.
+
+
+
+== Installazione del bilanciatore di carico SeeSaw
+
+Il bilanciatore del carico SeeSaw è completamente integrato con Anthos Clusters su VMware e prevede una distribuzione automatizzata eseguita come parte delle configurazioni del cluster Admin e User.  Ci sono blocchi di testo nel `cluster.yaml` file di configurazione che devono essere modificati per fornire informazioni sul bilanciatore del carico, quindi c'è un passaggio aggiuntivo prima della distribuzione del cluster per distribuire il bilanciatore del carico utilizzando il built-in `gkectl` attrezzo.
+
+
+NOTE: I bilanciatori di carico SeeSaw possono essere distribuiti in modalità HA o non HA.  Ai fini di questa convalida, il bilanciatore del carico SeeSaw è stato distribuito in modalità non HA, che è l'impostazione predefinita.  Per scopi di produzione, NetApp consiglia di implementare SeeSaw in una configurazione HA per garantire tolleranza agli errori e affidabilità.
+
+
+
+== Integrazione con Anthos
+
+In ogni file di configurazione è presente una sezione, rispettivamente per il cluster di amministrazione e in ogni cluster utente che si sceglie di distribuire, per configurare il bilanciatore del carico in modo che venga gestito da Anthos On-Prem.
+
+Il testo seguente è un esempio della configurazione della partizione per il cluster GKE-Admin.  I valori che devono essere decommentati e modificati sono evidenziati in grassetto qui sotto:
+
+[listing, subs="+quotes,+verbatim"]
+----
+*loadBalancer:*
+  # (Required) The VIPs to use for load balancing
+  *vips:*
+    # Used to connect to the Kubernetes API
+    *controlPlaneVIP: "10.61.181.230"*
+    # # (Optional) Used for admin cluster addons (needed for multi cluster features). Must
+    # # be the same across clusters
+    # # addonsVIP: ""
+  # (Required) Which load balancer to use "F5BigIP" "Seesaw" or "ManualLB". Uncomment
+  # the corresponding field below to provide the detailed spec
+  *kind: Seesaw*
+  # # (Required when using "ManualLB" kind) Specify pre-defined nodeports
+  # manualLB:
+  #   # NodePort for ingress service's http (only needed for user cluster)
+  #   ingressHTTPNodePort: 0
+  #   # NodePort for ingress service's https (only needed for user cluster)
+  #   ingressHTTPSNodePort: 0
+  #   # NodePort for control plane service
+  #   controlPlaneNodePort: 30968
+  #   # NodePort for addon service (only needed for admin cluster)
+  #   addonsNodePort: 31405
+  # # (Required when using "F5BigIP" kind) Specify the already-existing partition and
+  # # credentials
+  # f5BigIP:
+  #   address:
+  #   credentials:
+  #     username:
+  #     password:
+  #   partition:
+  #   # # (Optional) Specify a pool name if using SNAT
+  #   # snatPoolName: ""
+  # (Required when using "Seesaw" kind) Specify the Seesaw configs
+  *seesaw:*
+  # (Required) The absolute or relative path to the yaml file to use for IP allocation
+  #  for LB VMs. Must contain one or two IPs.
+  *ipBlockFilePath: "admin-seesaw-block.yaml"*
+  #   (Required) The Virtual Router IDentifier of VRRP for the Seesaw group. Must
+  #   be between 1-255 and unique in a VLAN.
+    *vrid: 100*
+  #   (Required) The IP announced by the master of Seesaw group
+    *masterIP: "10.61.181.236"*
+  #   (Required) The number CPUs per machine
+    *cpus: 1*
+  #   (Required) Memory size in MB per machine
+    *memoryMB: 2048*
+  #   (Optional) Network that the LB interface of Seesaw runs in (default: cluster
+  #   network)
+    *vCenter:*
+  #   vSphere network name
+      *networkName: VM_Network*
+  #   (Optional) Run two LB VMs to achieve high availability (default: false)
+    *enableHA: false*
+----
+Il bilanciatore di carico SeeSaw ha anche un'unità statica separata `seesaw-block.yaml` file che devi fornire per ogni distribuzione del cluster.  Questo file deve trovarsi nella stessa directory relativa al `cluster.yaml` file di distribuzione, oppure è necessario specificare il percorso completo nella sezione precedente.
+
+Un campione del `admin-seesaw-block.yaml` il file appare come lo script seguente:
+
+[listing, subs="+quotes,+verbatim"]
+----
+blocks:
+  - netmask: "255.255.255.0"
+    gateway: "10.63.172.1"
+    ips:
+    - ip: "10.63.172.152"
+      hostname: "admin-seesaw-vm"
+----
+
+NOTE: Questo file fornisce il gateway e la netmask per la rete che il bilanciatore del carico fornisce al cluster sottostante, nonché l'IP di gestione e il nome host per la macchina virtuale distribuita per eseguire il bilanciatore del carico.

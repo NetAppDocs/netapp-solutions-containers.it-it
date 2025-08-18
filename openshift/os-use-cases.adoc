@@ -1,0 +1,23 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-use-cases.html 
+keywords: validation, use-cases, application, multitenancy, virtualization, pipeline 
+summary:  
+---
+= Validazione della soluzione e casi d'uso: Red Hat OpenShift con NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Gli esempi forniti in questa pagina sono convalide di soluzioni e casi d'uso per Red Hat OpenShift con NetApp.
+
+* link:os-use-case-pipeline.html["Distribuisci una pipeline CI/CD Jenkins con storage persistente"]
+* link:os-multitenancy-overview.html["Configurare Multitenancy su Red Hat OpenShift con NetApp"]
+* link:https://docs.netapp.com/us-en/netapp-solutions-virtualization/openshift/osv-overview.html["Virtualizzazione Red Hat OpenShift con NetApp ONTAP"^]
+* link:os-adv-mgmt-overview.html["Gestione avanzata dei cluster per Kubernetes su Red Hat OpenShift con NetApp"]
+

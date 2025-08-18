@@ -1,0 +1,108 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-solution-overview.html 
+keywords: NVA-1160, Red Hat, OpenShift, Netapp, Trident 
+summary: 'Questo documento di riferimento fornisce la convalida della distribuzione della soluzione Red Hat OpenShift, distribuita tramite Installer Provisioned Infrastructure (IPI) in diversi ambienti di data center, come convalidato da NetApp.  Descrive inoltre in dettaglio l"integrazione dello storage con i sistemi di storage NetApp mediante l"utilizzo dell"orchestratore di storage Trident per la gestione dello storage persistente.  Infine, vengono esaminate e documentate una serie di convalide di soluzioni e casi d"uso reali.' 
+---
+= NVA-1160: Red Hat OpenShift con NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+Alan Cowles e Nikhil M Kulkarni, NetApp
+
+[role="lead"]
+Questo documento di riferimento fornisce la convalida della distribuzione della soluzione Red Hat OpenShift, distribuita tramite Installer Provisioned Infrastructure (IPI) in diversi ambienti di data center, come convalidato da NetApp.  Descrive inoltre in dettaglio l'integrazione dello storage con i sistemi di storage NetApp mediante l'utilizzo dell'orchestratore di storage Trident per la gestione dello storage persistente.  Infine, vengono esaminate e documentate una serie di convalide di soluzioni e casi d'uso reali.
+
+
+
+== Casi d'uso
+
+La soluzione Red Hat OpenShift con NetApp è progettata per offrire un valore eccezionale ai clienti con i seguenti casi d'uso:
+
+* Red Hat OpenShift è facile da implementare e gestire, distribuito tramite IPI (Installer Provisioned Infrastructure) su bare metal, Red Hat OpenStack Platform, Red Hat Virtualization e VMware vSphere.
+* Potenza combinata di container aziendali e carichi di lavoro virtualizzati con Red Hat OpenShift distribuiti virtualmente su OSP, RHV o vSphere, oppure su bare metal con OpenShift Virtualization.
+* Configurazione e casi d'uso reali che evidenziano le funzionalità di Red Hat OpenShift quando utilizzato con lo storage NetApp e Trident, l'orchestratore di storage open source per Kubernetes.
+
+
+
+
+== Valore aziendale
+
+Le aziende stanno adottando sempre più pratiche DevOps per creare nuovi prodotti, abbreviare i cicli di rilascio e aggiungere rapidamente nuove funzionalità.  Grazie alla loro innata natura agile, i container e i microservizi svolgono un ruolo cruciale nel supportare le pratiche DevOps.  Tuttavia, mettere in pratica DevOps su scala produttiva in un ambiente aziendale presenta le sue sfide e impone determinati requisiti all'infrastruttura sottostante, come i seguenti:
+
+* Elevata disponibilità a tutti i livelli dello stack
+* Facilità delle procedure di distribuzione
+* Operazioni e aggiornamenti non dirompenti
+* Infrastruttura programmabile e basata su API per tenere il passo con l'agilità dei microservizi
+* Multitenancy con garanzie di prestazione
+* Capacità di eseguire carichi di lavoro virtualizzati e containerizzati simultaneamente
+* Capacità di scalare l'infrastruttura in modo indipendente in base alle richieste del carico di lavoro
+
+
+Red Hat OpenShift con NetApp riconosce queste sfide e presenta una soluzione che aiuta a risolvere ogni problema implementando la distribuzione completamente automatizzata di RedHat OpenShift IPI nell'ambiente del data center scelto dal cliente.
+
+
+
+== Panoramica della tecnologia
+
+La soluzione Red Hat OpenShift con NetApp è composta dai seguenti componenti principali:
+
+
+
+=== Piattaforma container Red Hat OpenShift
+
+Red Hat OpenShift Container Platform è una piattaforma Kubernetes aziendale completamente supportata.  Red Hat apporta diversi miglioramenti a Kubernetes open source per fornire una piattaforma applicativa con tutti i componenti completamente integrati per creare, distribuire e gestire applicazioni containerizzate.
+
+Per maggiori informazioni visita il sito web di OpenShift https://www.openshift.com["Qui"] .
+
+
+
+=== Sistemi di archiviazione NetApp
+
+NetApp dispone di diversi sistemi di storage ideali per data center aziendali e implementazioni cloud ibride.  Il portfolio NetApp include i sistemi di storage NetApp ONTAP, NetApp Element e NetApp e-Series, tutti in grado di fornire storage persistente per applicazioni containerizzate.
+
+Per maggiori informazioni visita il sito web NetApp https://www.netapp.com["Qui"] .
+
+
+
+=== Integrazioni di storage NetApp
+
+Trident è un orchestratore di storage open source e completamente supportato per container e distribuzioni Kubernetes, tra cui Red Hat OpenShift.
+
+Per maggiori informazioni, visita il sito web Trident https://docs.netapp.com/us-en/trident/index.html["Qui"] .
+
+
+
+== Opzioni di configurazione avanzate
+
+Questa sezione è dedicata alle personalizzazioni che gli utenti reali potrebbero dover eseguire durante la distribuzione di questa soluzione in produzione, ad esempio la creazione di un registro di immagini privato dedicato o la distribuzione di istanze di bilanciamento del carico personalizzate.
+
+
+
+== Matrice di supporto attuale per le versioni convalidate
+
+|===
+
+
+| Tecnologia | Scopo | Versione del software 
+
+
+| NetApp ONTAP | Magazzinaggio | 9.8, 9.9.1, 9.12.1 
+
+
+| NetApp Element | Magazzinaggio | 12,3 
+
+
+| NetApp Trident | Orchestrazione dell'archiviazione | 22.01.0, 23.04, 23.07, 23.10, 24.02 
+
+
+| Red Hat OpenShift | Orchestrazione dei contenitori | 4.6 UE, 4.7, 4.8, 4.10, 4.11, 4.12, 4.13, 4.14 
+
+
+| VMware vSphere | Virtualizzazione del data center | 7.0, 8.0.2 
+|===

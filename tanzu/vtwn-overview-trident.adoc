@@ -1,0 +1,120 @@
+---
+sidebar: sidebar 
+permalink: tanzu/vtwn-overview-trident.html 
+keywords: Trident, Trident, Helm, Operator, iSCSI, NFS, Tanzu, VMware Tanzu with NetApp Trident 
+summary: Trident è un orchestratore di storage open source e completamente supportato per container e distribuzioni Kubernetes, tra cui VMware Tanzu. 
+---
+= Panoramica Trident
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+:k8s_distribution_name: Red Hat OpenShift, VMware Tanzu, Anthos by Google Cloud, Rancher etc
+
+
+[role="lead"]
+Trident è un orchestratore di storage open source e completamente supportato per container e distribuzioni Kubernetes, tra cui VMware Tanzu.
+
+[role="normal"]
+Trident è un orchestratore di storage open source e completamente supportato per container e distribuzioni Kubernetes come {k8s_distribution_name}.  Trident funziona con l'intero portfolio di storage NetApp , inclusi i sistemi di storage NetApp ONTAP ed Element, e supporta anche connessioni NFS e iSCSI.  Trident accelera il flusso di lavoro DevOps consentendo agli utenti finali di effettuare il provisioning e gestire lo storage dai propri sistemi di storage NetApp senza richiedere l'intervento di un amministratore dello storage.
+
+Un amministratore può configurare una serie di backend di archiviazione in base alle esigenze del progetto e ai modelli di sistema di archiviazione che abilitano funzionalità di archiviazione avanzate, tra cui compressione, tipi di dischi specifici o livelli QoS che garantiscono un certo livello di prestazioni.  Una volta definiti, questi backend possono essere utilizzati dagli sviluppatori nei loro progetti per creare richieste di volume persistenti (PVC) e per collegare storage persistente ai loro contenitori su richiesta.
+
+image:redhat-openshift-002.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+
+Trident ha un ciclo di sviluppo rapido e, come Kubernetes, viene rilasciato quattro volte all'anno.
+
+L'ultima versione di Trident è la 22.04, rilasciata nell'aprile 2022.  È possibile trovare una matrice di supporto per la versione di Trident testata con quale distribuzione Kubernetes https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["Qui"] .
+
+A partire dalla versione 20.04, la configurazione Trident viene eseguita dall'operatore Trident .  L'operatore semplifica le distribuzioni su larga scala e fornisce supporto aggiuntivo, tra cui l'auto-riparazione per i pod distribuiti come parte dell'installazione Trident .
+
+Con la versione 21.01 è stata resa disponibile una tabella Helm per semplificare l'installazione del Trident Operator.
+
+
+
+== Distribuisci l'operatore Trident utilizzando Helm
+
+. Per prima cosa imposta la posizione del cluster utente `kubeconfig` file come variabile di ambiente in modo da non doverlo più referenziare, perché Trident non ha alcuna opzione per passare questo file.
++
+[listing]
+----
+[netapp-user@rhel7]$ export KUBECONFIG=~/tanzu-install/auth/kubeconfig
+----
+. Aggiungere il repository helm NetApp Trident .
++
+[listing]
+----
+[netapp-user@rhel7]$ helm repo add netapp-trident https://netapp.github.io/trident-helm-chart
+"netapp-trident" has been added to your repositories
+----
+. Aggiornare i repository helm.
++
+[listing]
+----
+[netapp-user@rhel7]$ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "netapp-trident" chart repository
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
+----
+. Crea un nuovo namespace per l'installazione di Trident.
++
+[listing]
+----
+[netapp-user@rhel7]$ kubetcl create ns trident
+----
+. Crea un segreto con le credenziali DockerHub per scaricare le immagini Trident .
++
+[listing]
+----
+[netapp-user@rhel7]$ kubectl create secret docker-registry docker-registry-cred --docker-server=docker.io --docker-username=netapp-solutions-tme --docker-password=xxxxxx -n trident
+----
+. Per i cluster utente o di carico di lavoro gestiti da TKGS (vSphere con Tanzu) o TKG con distribuzioni di cluster di gestione, completare la seguente procedura per installare Trident:
++
+.. Assicurarsi che l'utente connesso disponga delle autorizzazioni per creare account di servizio nello spazio dei nomi Trident e che gli account di servizio nello spazio dei nomi Trident dispongano delle autorizzazioni per creare pod.
+.. Eseguire il comando helm riportato di seguito per installare l'operatore Trident nello spazio dei nomi creato.
++
+[listing]
+----
+[netapp-user@rhel7]$ helm install trident netapp-trident/trident-operator -n trident --set imagePullSecrets[0]=docker-registry-cred
+----
+
+
+. Per un cluster di utenti o carichi di lavoro gestito da distribuzioni TKGI, eseguire il seguente comando helm per installare l'operatore Trident nello spazio dei nomi creato.
++
+[listing]
+----
+[netapp-user@rhel7]$ helm install trident netapp-trident/trident-operator -n trident --set imagePullSecrets[0]=docker-registry-cred,kubeletDir="/var/vcap/data/kubelet"
+----
+. Verificare che i pod Trident siano attivi e funzionanti.
++
+[listing]
+----
+NAME                                READY   STATUS    RESTARTS        AGE
+trident-csi-6vv62                   2/2     Running   0               14m
+trident-csi-cfd844bcc-sqhcg         6/6     Running   0               12m
+trident-csi-dfcmz                   2/2     Running   0               14m
+trident-csi-pb2n7                   2/2     Running   0               14m
+trident-csi-qsw6z                   2/2     Running   0               14m
+trident-operator-67c94c4768-xw978   1/1     Running   0               14m
+
+[netapp-user@rhel7]$ ./tridentctl -n trident version
++----------------+----------------+
+| SERVER VERSION | CLIENT VERSION |
++----------------+----------------+
+| 22.04.0          | 22.04.0          |
++----------------+----------------+
+----
+
+
+
+
+== Creare backend del sistema di archiviazione
+
+Dopo aver completato l'installazione di Trident Operator, è necessario configurare il backend per la specifica piattaforma di storage NetApp utilizzata.  Seguire i link sottostanti per continuare l'installazione e la configurazione di Trident.
+
+* link:vtwn-trident-ontap-nfs.html["NetApp ONTAP NFS"]
+* link:vtwn-trident-ontap-iscsi.html["NetApp ONTAP iSCSI"]
+

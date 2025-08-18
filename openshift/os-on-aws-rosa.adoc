@@ -1,0 +1,19 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-on-aws-rosa.html 
+keywords: OpenShift, AWS, ROSA 
+summary: Red Hat OpenShift Service su AWS è una piattaforma Kubernetes completamente gestita che consente agli sviluppatori di creare e distribuire applicazioni nel cloud AWS. 
+---
+= Servizio Red Hat OpenShift su AWS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Red Hat OpenShift Service on AWS (ROSA) è un servizio gestito che puoi utilizzare per creare, scalare e distribuire applicazioni containerizzate con la piattaforma Kubernetes aziendale Red Hat OpenShift su AWS.  ROSA semplifica lo spostamento dei carichi di lavoro Red Hat OpenShift on-premise su AWS e offre una stretta integrazione con altri servizi AWS.
+
+Per maggiori informazioni su ROSA, consultare la documentazione qui:link:https://docs.aws.amazon.com/rosa/latest/userguide/what-is-rosa.html["Red Hat OpenShift Service su AWS (documentazione AWS)"] . link:https://docs.openshift.com/rosa/rosa_architecture/rosa-understanding.html["Red Hat OpenShift Service su AWS (documentazione Red Hat)"] .

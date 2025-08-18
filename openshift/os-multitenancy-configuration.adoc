@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-multitenancy-configuration.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, Multitenancy, Multi-tenancy 
+summary: Configurazione del multitenancy su Red Hat OpenShift con NetApp 
+---
+= Configurazione
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Per qualsiasi soluzione multitenant, nessun utente può avere accesso a più risorse del cluster di quelle necessarie.  Pertanto, l'intero set di risorse da configurare come parte della configurazione multi-tenancy è suddiviso tra l'amministratore del cluster, l'amministratore dello storage e gli sviluppatori che lavorano su ciascun progetto.
+
+Nella tabella seguente sono illustrate le diverse attività che devono essere svolte dai diversi utenti:
+
+|===
+| Ruolo | Compiti 
+
+
+.4+| *Amministratore del cluster* | Crea progetti per diverse applicazioni o carichi di lavoro 
+
+
+| Crea ClusterRoles e RoleBindings per storage-admin 
+
+
+| Creare ruoli e RoleBinding per gli sviluppatori che assegnano l'accesso a progetti specifici 
+
+
+| [Facoltativo] Configurare i progetti per pianificare i pod su nodi specifici 
+
+
+.4+| *Amministratore di archiviazione* | Creare SVM su NetApp ONTAP 
+
+
+| Crea backend Trident 
+
+
+| Crea classi di archiviazione 
+
+
+| Crea ResourceQuotas di archiviazione 
+
+
+.3+| *Sviluppatori* | Convalida l'accesso per creare o applicare patch a PVC o pod nel progetto assegnato 
+
+
+| Convalida l'accesso per creare o applicare patch a PVC o pod in un altro progetto 
+
+
+| Convalida l'accesso per visualizzare o modificare Progetti, ResourceQuota e StorageClass 
+|===

@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: tanzu/vtwn-overview-vmware-tanzu.html 
+keywords: VMware Tanzu, Tanzu, DevOps, Netapp, Trident, Trident Protect 
+summary: 'VMware Tanzu è un portafoglio di prodotti che consente alle aziende di modernizzare le proprie applicazioni e l"infrastruttura su cui vengono eseguite.  L"intera gamma di funzionalità di VMware Tanzu riunisce i team di sviluppo e di operazioni IT su un"unica piattaforma per adottare la modernizzazione sia nelle applicazioni che nelle infrastrutture in modo coerente negli ambienti on-premise e cloud ibridi, per fornire costantemente software migliore alla produzione.' 
+---
+= Panoramica di VMware Tanzu
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+VMware Tanzu è un portafoglio di prodotti che consente alle aziende di modernizzare le proprie applicazioni e l'infrastruttura su cui vengono eseguite.  L'intera gamma di funzionalità di VMware Tanzu riunisce i team di sviluppo e di operazioni IT su un'unica piattaforma per adottare la modernizzazione sia nelle applicazioni che nelle infrastrutture in modo coerente negli ambienti on-premise e cloud ibridi, per fornire costantemente software migliore alla produzione.
+
+image:vtwn-001.png["Portafoglio VMware Tanzu"]
+
+Per saperne di più sulle diverse offerte e sulle loro capacità nel portafoglio Tanzu, visita la documentazionelink:https://docs.vmware.com/en/VMware-Tanzu/index.html["Qui"^] .
+
+Per quanto riguarda il catalogo Kubernetes Operations di Tanzu, VMware dispone di diverse implementazioni per Tanzu Kubernetes Grid, tutte in grado di fornire e gestire il ciclo di vita dei cluster Tanzu Kubernetes su diverse piattaforme.  Un cluster Tanzu Kubernetes è una distribuzione Kubernetes completa, creata e supportata da VMware.
+
+NetApp ha testato e convalidato nei suoi laboratori l'implementazione e l'interoperabilità dei seguenti prodotti del portfolio VMware Tanzu:
+
+* link:vtwn-overview-tkg.html["Griglia VMware Tanzu Kubernetes (TKG)"]
+* link:vtwn-overview-tkgs.html["Servizio griglia VMware Tanzu Kubernetes (TKGS)"]
+* link:vtwn-overview-tkgi.html["VMware Tanzu Kubernetes Grid Integrated (TKGI)"]
+* link:vtwn-overview-vst.html["VMware vSphere con Tanzu (vSphere Pod)"]
+

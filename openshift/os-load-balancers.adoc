@@ -1,0 +1,25 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-load-balancers.html 
+keywords: Advanced Configuration, Load Balancers, MetalLB 
+summary: 'Questa sezione è dedicata all"esplorazione delle opzioni di bilanciamento del carico per gli utenti che desiderano personalizzare la propria distribuzione Red Hat OpenShift con NetApp .' 
+---
+= Esplorazione delle opzioni di bilanciamento del carico: Red Hat OpenShift con NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Nella maggior parte dei casi, Red Hat OpenShift rende le applicazioni disponibili al mondo esterno tramite percorsi.  Un servizio viene esposto assegnandogli un nome host raggiungibile esternamente.  Il percorso definito e gli endpoint identificati dal suo servizio possono essere utilizzati da un router OpenShift per fornire questa connettività denominata ai client esterni.
+
+Tuttavia, in alcuni casi, le applicazioni richiedono l'implementazione e la configurazione di bilanciatori di carico personalizzati per esporre i servizi appropriati.  Un esempio è NetApp Trident Protect.  Per soddisfare questa esigenza, abbiamo valutato diverse opzioni di bilanciamento del carico personalizzate.  La loro installazione e configurazione sono descritte in questa sezione.
+
+Le pagine seguenti contengono informazioni aggiuntive sulle opzioni di bilanciamento del carico convalidate nella soluzione Red Hat OpenShift con NetApp :
+
+* link:os-lb-metallb.html["MetalloLB"]
+* link:os-lb-f5bigip.html["F5 BIG-IP"]
+

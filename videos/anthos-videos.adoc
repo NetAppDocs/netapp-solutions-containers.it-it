@@ -1,0 +1,30 @@
+---
+sidebar: sidebar 
+permalink: videos/anthos-videos.html 
+keywords: video, demonstration, deployment 
+summary: Dimostra alcune delle funzionalità documentate in questo documento. 
+---
+= Guarda i video su Anthos con NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Esplora le funzionalità principali e gli scenari di distribuzione di NetApp con Google Anthos attraverso una selezione accurata di video e dimostrazioni.  Queste risorse illustrano le migliori pratiche, i passaggi di integrazione e i casi d'uso concreti.
+
+
+
+== Distribuzione e configurazione di Anthos su bare metal
+
+.Distribuisci Anthos su bare metal - Anthos con NetApp
+video::a9e5fd88-6bdc-4d23-a4b5-b01200effc06[panopto,width=360]
+
+
+== Distribuzione e configurazione Trident su Anthos
+
+.Distribuisci Trident sul cluster Anthos 1.14
+video::8ea4c03a-85e9-4d90-bf3c-afb6011b051c[panopto,width=360]

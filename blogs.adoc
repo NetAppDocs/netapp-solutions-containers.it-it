@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: blogs.html 
+summary: Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo storage ONTAP con le soluzioni di virtualizzazione NetApp . 
+keywords: netapp, solutions, blogs 
+---
+= Leggi i blog sulle soluzioni container degli esperti NetApp
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo storage ONTAP con le soluzioni container NetApp .
+
+
+
+== Distribuzione e integrazione di OpenShift
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Simplifying-Trident-Installation-on-Red-Hat-OpenShift-with-the-New-Certified/ba-p/459710["Semplificazione dell'installazione Trident su Red Hat OpenShift con il nuovo Trident Operator certificato"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Unlock-Seamless-iSCSI-Storage-Integration-A-Guide-to-FSxN-on-ROSA-Clusters-for/ba-p/459124["Sblocca l'integrazione perfetta dello storage iSCSI: una guida a FSxN su cluster ROSA per iSCSI"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Amazon-FSx-for-NetApp-ONTAP-with-Red-Hat-OpenShift-Service-on-AWS-ROSA-using/ba-p/456167["Amazon FSx for NetApp ONTAP con Red Hat OpenShift Service su AWS (ROSA) utilizzando il piano di controllo ospitato"]
+* link:https://netapp.io/2021/05/21/docker-rate-limit-issue/["Installazione di NetApp Trident su Red Hat OpenShift: come risolvere il problema "troppe richieste" di Docker!"]
+
+
+
+
+== Protezione dei dati e backup
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Crash-Consistent-Backup-and-Restore-Operations-for-OpenShift-Virtualization-VMs/ba-p/459417["Operazioni di backup e ripristino coerenti con gli arresti anomali per le VM di OpenShift Virtualization che utilizzano Trident 25.02"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/A-Backup-and-Restore-option-for-VM-data-protection-in-OpenShift-Virtualization/ba-p/452279["Un'opzione di backup e ripristino per la protezione dei dati delle VM in OpenShift Virtualization"]
+
+
+
+
+== Virtualizzazione e operazioni VM
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Live-Migration-of-VMs-with-OpenShift-Virtualization-on-ROSA-and-Amazon-FSx-for/ba-p/456213["Migrazione live di VM con OpenShift Virtualization su ROSA e Amazon FSx for NetApp ONTAP"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/ONTAP-for-OpenShift-Virtualization-VMs-non-disruptive-volume-move-operation-is/ba-p/451941["ONTAP per VM di virtualizzazione OpenShift: l'operazione di spostamento del volume senza interruzioni è tua"]
+
+
+
+
+== Integrazione e prestazioni dello storage
+
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Using-NVMe-TCP-to-consume-ONTAP-storage-for-your-modern-containerized-apps-on/ba-p/453706["Utilizzo di NVMe/TCP per consumare lo storage ONTAP per le tue moderne app containerizzate su VMware"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/ONTAP-as-backend-storage-for-the-integrated-image-registry-in-OpenShift/ba-p/453142["ONTAP come archivio backend per il registro immagini integrato in OpenShift Container Platform"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/NetApp-ONTAP-doubles-up-as-storage-for-logs-in-Red-Hat-OpenShift-Container/ba-p/449280["NetApp ONTAP funge anche da storage per i log in Red Hat OpenShift Container Platform"]
+
+
+
+
+== Kubernetes e l'ecosistema VMware
+
+* link:https://blog.netapp.com/accelerate-your-k8s-journey["Utilizzo di VMware Tanzu con ONTAP per accelerare il tuo percorso verso Kubernetes"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Kubernetes-on-vSphere-Part-1/ba-p/445634["Kubernetes su vSphere (Parte 1)"]
+* link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Kubernetes-on-vSphere-Part-2/ba-p/445848["Kubernetes su vSphere (Parte 2)"]
+

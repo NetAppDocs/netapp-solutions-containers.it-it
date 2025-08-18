@@ -1,0 +1,62 @@
+---
+sidebar: sidebar 
+permalink: openshift/os-multi-tenant-architecture.html 
+keywords: OpenShift, OCP, Trident, NetApp ONTAP, Red Hat OpenShift, Multitenancy, Multi-tenancy 
+summary: Configurazione del multitenancy su Red Hat OpenShift con NetApp 
+---
+= Architettura
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Sebbene Red Hat OpenShift e Trident supportati da NetApp ONTAP non forniscano l'isolamento tra carichi di lavoro per impostazione predefinita, offrono un'ampia gamma di funzionalità che possono essere utilizzate per configurare il multi-tenancy.  Per comprendere meglio la progettazione di una soluzione multitenant su un cluster Red Hat OpenShift con Trident supportato da NetApp ONTAP, prendiamo in considerazione un esempio con una serie di requisiti e descriviamo la configurazione relativa.
+
+Supponiamo che un'organizzazione esegua due dei suoi carichi di lavoro su un cluster Red Hat OpenShift come parte di due progetti su cui stanno lavorando due team diversi.  I dati per questi carichi di lavoro risiedono su PVC forniti dinamicamente da Trident su un backend NAS NetApp ONTAP .  L'organizzazione ha l'esigenza di progettare una soluzione multitenant per questi due carichi di lavoro e di isolare le risorse utilizzate per questi progetti per garantire che la sicurezza e le prestazioni siano mantenute, concentrandosi principalmente sui dati che servono a tali applicazioni.
+
+La figura seguente illustra la soluzione multitenant su un cluster Red Hat OpenShift con Trident supportato da NetApp ONTAP.
+
+image:redhat-openshift-040.png["Multi-tenancy sul cluster Red Hat OpenShift con Trident supportato da NetApp ONTAP"]
+
+
+
+== Requisiti tecnologici
+
+. Cluster di archiviazione NetApp ONTAP
+. Cluster Red Hat OpenShift
+. Trident
+
+
+
+
+== Red Hat OpenShift – Risorse del cluster
+
+Dal punto di vista del cluster Red Hat OpenShift, la risorsa di primo livello da cui partire è il progetto.  Un progetto OpenShift può essere visto come una risorsa cluster che divide l'intero cluster OpenShift in più cluster virtuali.  Pertanto, l'isolamento a livello di progetto fornisce una base per la configurazione del multi-tenancy.
+
+Il passo successivo è configurare RBAC nel cluster.  La procedura migliore è quella di configurare tutti gli sviluppatori che lavorano su un singolo progetto o carico di lavoro in un singolo gruppo di utenti nell'Identity Provider (IdP).  Red Hat OpenShift consente l'integrazione IdP e la sincronizzazione dei gruppi di utenti, consentendo così di importare gli utenti e i gruppi dall'IdP nel cluster.  Ciò aiuta gli amministratori del cluster a separare l'accesso alle risorse del cluster dedicate a un progetto a un gruppo di utenti o a gruppi che lavorano su quel progetto, limitando così l'accesso non autorizzato a qualsiasi risorsa del cluster.  Per saperne di più sull'integrazione IdP con Red Hat OpenShift, consulta la documentazione https://docs.openshift.com/container-platform/4.7/authentication/understanding-identity-provider.html["Qui"^] .
+
+
+
+== NetApp ONTAP
+
+È importante isolare lo storage condiviso che funge da provider di storage persistente per un cluster Red Hat OpenShift per garantire che i volumi creati sullo storage per ciascun progetto appaiano agli host come se fossero stati creati su uno storage separato.  Per fare ciò, crea tante SVM (macchine virtuali di storage) su NetApp ONTAP quanti sono i progetti o i carichi di lavoro e dedica ogni SVM a un carico di lavoro.
+
+
+
+== Trident
+
+Dopo aver creato diverse SVM per progetti diversi su NetApp ONTAP, è necessario mappare ciascuna SVM a un diverso backend Trident .  La configurazione del backend su Trident gestisce l'allocazione dello storage persistente alle risorse del cluster OpenShift e richiede la mappatura dei dettagli dell'SVM.  Questo dovrebbe essere almeno il driver del protocollo per il backend.  Facoltativamente, consente di definire come i volumi vengono forniti nello storage e di impostare limiti per le dimensioni dei volumi o l'utilizzo degli aggregati e così via.  I dettagli riguardanti la definizione dei backend Trident possono essere trovati https://docs.netapp.com/us-en/trident/trident-use/backends.html["Qui"^] .
+
+
+
+== Red Hat OpenShift – risorse di storage
+
+Dopo aver configurato i backend Trident , il passaggio successivo consiste nel configurare StorageClasses.  Configurare tante classi di archiviazione quanti sono i backend, consentendo a ciascuna classe di archiviazione di accedere ai volumi solo su un backend.  Possiamo mappare StorageClass su un particolare backend Trident utilizzando il parametro storagePools durante la definizione della classe di archiviazione.  I dettagli per definire una classe di archiviazione possono essere trovati https://docs.netapp.com/us-en/trident/trident-use/manage-stor-class.html["Qui"^] .  Pertanto, esiste una mappatura uno a uno da StorageClass al backend Trident che punta a una SVM.  Ciò garantisce che tutte le richieste di archiviazione tramite StorageClass assegnate a quel progetto vengano gestite solo dall'SVM dedicato a quel progetto.
+
+Poiché le classi di archiviazione non sono risorse con namespace, come possiamo garantire che le richieste di archiviazione per la classe di archiviazione di un progetto da parte di pod in un altro namespace o progetto vengano rifiutate?  La risposta è usare ResourceQuotas.  Le ResourceQuota sono oggetti che controllano l'utilizzo totale delle risorse per progetto.  Può limitare il numero e la quantità totale di risorse che possono essere consumate dagli oggetti nel progetto.  Quasi tutte le risorse di un progetto possono essere limitate utilizzando ResourceQuotas; un utilizzo efficiente di questa funzionalità può aiutare le organizzazioni a ridurre i costi e le interruzioni dovute all'eccessivo approvvigionamento o al consumo eccessivo di risorse.  Fare riferimento alla documentazione https://docs.openshift.com/container-platform/4.7/applications/quotas/quotas-setting-per-project.html["Qui"^] per maggiori informazioni.
+
+Per questo caso d'uso, dobbiamo impedire ai pod di un particolare progetto di richiedere spazio di archiviazione da classi di archiviazione non dedicate al loro progetto.  Per fare ciò, dobbiamo limitare le richieste di volume persistente per altre classi di archiviazione impostando `<storage-class-name>.storageclass.storage.k8s.io/persistentvolumeclaims` a 0.  Inoltre, un amministratore di cluster deve garantire che gli sviluppatori di un progetto non abbiano accesso per modificare ResourceQuotas.
