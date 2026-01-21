@@ -4,8 +4,8 @@ indexpage:
   summary: Serie di video e demo che illustrano le funzionalità di molte delle soluzioni
     container di NetApp
   lead: Scopri la completa libreria video di NetApp che illustra le soluzioni container
-    sulle piattaforme Anthos, OpenShift e VMware Tanzu.  Ogni raccolta si concentra
-    su casi d'uso e scenari di integrazione specifici.
+    sulle piattaforme Anthos e OpenShift. Ogni raccolta si concentra su casi d'uso
+    e scenari di integrazione specifici.
   tiles:
   - title: Anthos con NetApp
     links:
@@ -25,9 +25,3 @@ indexpage:
       url: openshift-videos.html#automation-and-integration
     - title: Integrazioni cloud e ibride
       url: openshift-videos.html#cloud-and-hybrid-integrations
-  - title: VMware Tanzu con NetApp
-    links:
-    - title: Provisioning di storage persistente
-      url: tanzu-videos.html#persistent-storage-provisioning
-    - title: Clonazione delle applicazioni e protezione dei dati
-      url: tanzu-videos.html#application-cloning-and-data-protection

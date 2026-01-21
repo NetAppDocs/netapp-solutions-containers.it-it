@@ -154,9 +154,9 @@ Sebbene sia possibile installare Anthos in un cluster vSphere con meno di tre no
 
 L'affinità o l'anti-affinità è un modo per definire regole per un set di VM e/o host che determinano se le VM vengono eseguite insieme sullo stesso host o sugli stessi host del gruppo oppure su host diversi.  Viene applicato alle VM creando gruppi di affinità costituiti da VM e/o host con un set di parametri e condizioni identici.  A seconda che le VM in un gruppo di affinità vengano eseguite sullo stesso host o sugli stessi host del gruppo oppure separatamente su host diversi, i parametri del gruppo di affinità possono definire un'affinità positiva o negativa.
 
-Per configurare i gruppi di affinità, consultare il collegamento appropriato qui sotto per la versione di VMWare vSphere in uso.
+Per configurare i gruppi di affinità, consultare il collegamento appropriato qui sotto per la propria versione di VMware vSphere.
 
-https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentazione di vSphere 6.7: utilizzo delle regole di affinità DRS"^] . https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.resmgmt.doc/GUID-FF28F29C-8B67-4EFF-A2EF-63B3537E6934.html["Documentazione di vSphere 7.0: utilizzo delle regole di affinità DRS"^] .
+https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentazione di vSphere 9.0: utilizzo delle regole di affinità DRS"^]. hhttps://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html[Documentazione di vSphere 7.0: Utilizzo delle regole di affinità DRS^].
 
 
 NOTE: Anthos ha un'opzione di configurazione in ogni singolo `cluster.yaml` file per creare automaticamente regole di affinità dei nodi che possono essere abilitate o disabilitate in base al numero di host ESXi presenti nell'ambiente.
