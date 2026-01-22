@@ -74,8 +74,6 @@ I cluster Anthos su VMware possono essere distribuiti sia negli ambienti vSphere
 La tabella seguente contiene un elenco delle versioni di vSphere utilizzate da NetApp e dai nostri partner per convalidare la soluzione.
 
 |===
-
-
 | Sistema operativo | Pubblicazione | Versioni Anthos 
 
 
@@ -108,8 +106,6 @@ La tabella seguente contiene informazioni su questi componenti infrastrutturali 
 La tabella seguente include un elenco delle versioni software distribuite nell'ambiente di convalida.
 
 |===
-
-
 | Produttore | Nome del software | Versione 
 
 
@@ -156,7 +152,7 @@ L'affinità o l'anti-affinità è un modo per definire regole per un set di VM e
 
 Per configurare i gruppi di affinità, consultare il collegamento appropriato qui sotto per la propria versione di VMware vSphere.
 
-https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentazione di vSphere 9.0: utilizzo delle regole di affinità DRS"^]. hhttps://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html[Documentazione di vSphere 7.0: Utilizzo delle regole di affinità DRS^].
+https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["Documentazione di vSphere 9.0: utilizzo delle regole di affinità DRS"^]. https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/vsphere-resource-management/using-drs-clusters-to-manage-resources/using-vm-host-affinity-rules.html["vSphere 7.0 Documentazione: Utilizzo delle regole di affinità DRS"^].
 
 
 NOTE: Anthos ha un'opzione di configurazione in ogni singolo `cluster.yaml` file per creare automaticamente regole di affinità dei nodi che possono essere abilitate o disabilitate in base al numero di host ESXi presenti nell'ambiente.
