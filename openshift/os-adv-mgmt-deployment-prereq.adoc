@@ -18,6 +18,7 @@ Questa sezione riguarda la gestione avanzata dei cluster per Kubernetes su Red H
 
 
 
+[[prerequisites]]
 == Prerequisiti
 
 . Un cluster Red Hat OpenShift (versione superiore alla 4.5) per il cluster hub

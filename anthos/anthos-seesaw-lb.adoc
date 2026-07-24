@@ -20,6 +20,7 @@ Seesaw è il bilanciatore del carico di rete gestito predefinito installato in u
 
 
 
+[[installing-the-seesaw-load-balancer]]
 == Installazione del bilanciatore di carico SeeSaw
 
 Il bilanciatore del carico SeeSaw è completamente integrato con Anthos Clusters su VMware e prevede una distribuzione automatizzata eseguita come parte delle configurazioni del cluster Admin e User.  Ci sono blocchi di testo nel `cluster.yaml` file di configurazione che devono essere modificati per fornire informazioni sul bilanciatore del carico, quindi c'è un passaggio aggiuntivo prima della distribuzione del cluster per distribuire il bilanciatore del carico utilizzando il built-in `gkectl` attrezzo.
@@ -29,6 +30,7 @@ NOTE: I bilanciatori di carico SeeSaw possono essere distribuiti in modalità HA
 
 
 
+[[integration-with-anthos]]
 == Integrazione con Anthos
 
 In ogni file di configurazione è presente una sezione, rispettivamente per il cluster di amministrazione e in ogni cluster utente che si sceglie di distribuire, per configurare il bilanciatore del carico in modo che venga gestito da Anthos On-Prem.

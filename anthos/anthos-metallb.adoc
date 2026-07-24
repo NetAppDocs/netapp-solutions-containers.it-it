@@ -18,12 +18,14 @@ In questa pagina sono elencate le istruzioni di installazione e configurazione p
 
 
 
+[[installing-the-metallb-load-balancer]]
 == Installazione del bilanciatore di carico MetalLB
 
 Il bilanciatore del carico MetalLB è completamente integrato con Anthos Clusters su VMware e dispone di una distribuzione automatizzata eseguita come parte delle configurazioni dei cluster Admin e User a partire dalla versione 1.11.  Ci sono blocchi di testo nel rispettivo `cluster.yaml` file di configurazione che è necessario modificare per fornire informazioni sul bilanciatore del carico.  È auto-ospitato sul tuo cluster Anthos anziché richiedere la distribuzione di risorse esterne come le altre soluzioni di bilanciamento del carico supportate.  Consente inoltre di creare un pool IP che assegna automaticamente indirizzi con la creazione di servizi Kubernetes di tipo load balancer in cluster che non vengono eseguiti su un provider cloud.
 
 
 
+[[integration-with-anthos]]
 == Integrazione con Anthos
 
 Quando si abilita il bilanciatore del carico MetalLB per l'amministratore di Anthos, è necessario modificare alcune righe nel `loadBalancer:` sezione che esiste nel `admin-cluster.yaml` file.  Gli unici valori che devi modificare sono quelli per impostare `controlPlaneVIP:` indirizzo e quindi impostare il `kind:` come MetalLB.  Per un esempio, vedere il seguente frammento di codice:

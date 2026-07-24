@@ -32,6 +32,7 @@ NOTE: Un sistema F5 BIG-IP può essere distribuito su hardware dedicato, nel clo
 
 
 
+[[validated-releases]]
 == Versioni convalidate
 
 |===
@@ -56,6 +57,7 @@ NOTE: Un sistema F5 BIG-IP può essere distribuito su hardware dedicato, nel clo
 |===
 
 
+[[installation]]
 == Installazione
 
 . Installare l'estensione F5 Application Services 3 per consentire ai sistemi BIG-IP di accettare configurazioni in JSON anziché comandi imperativi.  Vai a https://github.com/F5Networks/f5-appsvcs-extension/releases["Repository GitHub F5 AS3"^] e scarica l'ultimo file RPM.
@@ -365,6 +367,7 @@ customresourcedefinition.apiextensions.k8s.io/ipams.fic.f5.com
 
 
 
+[[verification]]
 == Verifica
 
 . Crea un servizio di tipo LoadBalancer

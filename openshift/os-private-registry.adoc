@@ -23,6 +23,7 @@ NOTE: Trident Protect necessita di un registro per ospitare le immagini richiest
 
 
 
+[[creating-a-private-image-registry]]
 == Creazione di un registro di immagini privato
 
 . Rimuovere l'annotazione predefinita dalla classe di archiviazione predefinita corrente e annotare la classe di archiviazione supportata da Trident come predefinita per il cluster OpenShift.

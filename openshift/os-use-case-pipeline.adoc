@@ -18,6 +18,7 @@ Questa sezione illustra i passaggi per distribuire una pipeline di integrazione 
 
 
 
+[[create-the-resources-required-for-jenkins-deployment]]
 == Creare le risorse necessarie per la distribuzione di Jenkins
 
 Per creare le risorse necessarie per la distribuzione dell'applicazione Jenkins, completare i seguenti passaggi:
@@ -33,6 +34,7 @@ image:redhat-openshift-016.png["Figura che mostra il dialogo di input/output o c
 
 
 
+[[deploy-jenkins-with-persistent-storage]]
 == Distribuisci Jenkins con storage persistente
 
 Per distribuire Jenkins con storage persistente, completare i seguenti passaggi:

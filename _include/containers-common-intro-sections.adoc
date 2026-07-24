@@ -82,10 +82,12 @@ image:redhat-openshift-035.png["Figura che mostra il dialogo di input/output o c
 
 
 
+[[netapp-platforms]]
 == Piattaforme NetApp
 
 
 
+[[netapp-afffas]]
 === NetApp AFF/ FAS
 
 NetApp fornisce piattaforme di storage all-flash (AFF) e ibride scale-out (FAS) robuste, realizzate su misura con prestazioni a bassa latenza, protezione dei dati integrata e supporto multiprotocollo.
@@ -96,6 +98,7 @@ Per ulteriori informazioni sulle piattaforme NETAPP AFF/ FAS , fare clic su http
 
 
 
+[[ontap-select]]
 === ONTAP Select
 
 ONTAP Select è una distribuzione software-defined di NetApp ONTAP che può essere distribuita su un hypervisor nel tuo ambiente.  Può essere installato su VMware vSphere o su KVM e fornisce tutte le funzionalità e l'esperienza di un sistema ONTAP basato su hardware.
@@ -104,6 +107,7 @@ Per maggiori informazioni su ONTAP Select, clicca https://docs.netapp.com/us-en/
 
 
 
+[[cloud-volumes-ontap]]
 === Cloud Volumes ONTAP
 
 NetApp Cloud Volumes ONTAP è una versione di NetApp ONTAP distribuita nel cloud che può essere distribuita in numerosi cloud pubblici, tra cui Amazon AWS, Microsoft Azure e Google Cloud.

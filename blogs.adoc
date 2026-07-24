@@ -18,6 +18,7 @@ Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo s
 
 
 
+[[openshift-deployment-and-integration]]
 == Distribuzione e integrazione di OpenShift
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Simplifying-Trident-Installation-on-Red-Hat-OpenShift-with-the-New-Certified/ba-p/459710["Semplificazione dell'installazione Trident su Red Hat OpenShift con il nuovo Trident Operator certificato"]
@@ -28,6 +29,7 @@ Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo s
 
 
 
+[[data-protection-and-backup]]
 == Protezione dei dati e backup
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Crash-Consistent-Backup-and-Restore-Operations-for-OpenShift-Virtualization-VMs/ba-p/459417["Operazioni di backup e ripristino coerenti con gli arresti anomali per le VM di OpenShift Virtualization che utilizzano Trident 25.02"]
@@ -36,6 +38,7 @@ Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo s
 
 
 
+[[virtualization-and-vm-operations]]
 == Virtualizzazione e operazioni VM
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Live-Migration-of-VMs-with-OpenShift-Virtualization-on-ROSA-and-Amazon-FSx-for/ba-p/456213["Migrazione live di VM con OpenShift Virtualization su ROSA e Amazon FSx for NetApp ONTAP"]
@@ -44,6 +47,7 @@ Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo s
 
 
 
+[[storage-integration-and-performance]]
 == Integrazione e prestazioni dello storage
 
 * link:https://community.netapp.com/t5/Tech-ONTAP-Blogs/Using-NVMe-TCP-to-consume-ONTAP-storage-for-your-modern-containerized-apps-on/ba-p/453706["Utilizzo di NVMe/TCP per consumare lo storage ONTAP per le tue moderne app containerizzate su VMware"]
@@ -53,6 +57,7 @@ Leggi i blog che offrono indicazioni pratiche e best practice per integrare lo s
 
 
 
+[[kubernetes-and-vmware-ecosystem]]
 == Kubernetes e l'ecosistema VMware
 
 * link:https://blog.netapp.com/accelerate-your-k8s-journey["Utilizzo di VMware Tanzu con ONTAP per accelerare il tuo percorso verso Kubernetes"]

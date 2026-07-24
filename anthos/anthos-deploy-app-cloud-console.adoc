@@ -18,6 +18,7 @@ Questa sezione spiega come distribuire un'applicazione sul tuo cluster Anthos GK
 
 
 
+[[prerequisites]]
 == Prerequisiti
 
 * Un cluster Anthos distribuito in locale e registrato con Google Cloud Console
@@ -28,6 +29,7 @@ Questa sezione spiega come distribuire un'applicazione sul tuo cluster Anthos GK
 
 
 
+[[deploying-an-application]]
 == Distribuzione di un'applicazione
 
 Per questo caso d'uso, distribuiamo una semplice applicazione WordPress su uno dei nostri cluster Anthos utilizzando Google Cloud Console.  La distribuzione utilizza l'archiviazione persistente fornita da NetApp ONTAP in una classe di archiviazione predefinita.  Successivamente illustriamo due metodi diversi per modificare il servizio predefinito delle applicazioni in modo che il bilanciatore del carico MetalLB gli fornisca un indirizzo IP e lo esponga al mondo.
@@ -78,12 +80,14 @@ image:a-w-n-use-case-deploy-app-003.png["Applicazione in esecuzione"]
 
 
 
+[[exposing-the-application]]
 == Esposizione dell'applicazione
 
 Dopo aver distribuito l'applicazione, sono disponibili due metodi per assegnarle un IP raggiungibile da tutto il mondo.
 
 
 
+[[using-the-google-cloud-console]]
 === Utilizzo di Google Cloud Console
 
 È possibile esporre l'applicazione utilizzando Google Cloud Console e modificando l'output YAML per i servizi in un browser per impostare un IP raggiungibile pubblicamente.  Per farlo, procedere come segue:
@@ -111,6 +115,7 @@ image:a-w-n-use-case-deploy-app-015.png["Dettagli del servizio finali"]
 
 
 
+[[patching-the-service-with-kubectl]]
 === Patching del servizio con Kubectl
 
 È possibile esporre l'applicazione utilizzando la CLI e `kubectl patch` comando per modificare la distribuzione e impostare un IP raggiungibile pubblicamente. Per farlo, completa i seguenti passaggi:
@@ -135,6 +140,7 @@ image:a-w-n-use-case-deploy-app-001.png["Patch Service per digitare LoadBalancer
 
 
 
+[[visit-the-application-at-the-exposed-external-ip]]
 == Visita l'applicazione all'IP esterno esposto
 
 Ora che l'applicazione è esposta con un indirizzo IP raggiungibile pubblicamente, puoi visitare la tua istanza di WordPress tramite un browser.

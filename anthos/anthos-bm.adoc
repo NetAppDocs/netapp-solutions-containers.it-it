@@ -18,6 +18,7 @@ Le funzionalità indipendenti dall'hardware di Anthos su bare metal consentono d
 
 
 
+[[benefits]]
 == Benefici
 
 Le funzionalità indipendenti dall'hardware di Anthos su bare metal consentono di selezionare una piattaforma di elaborazione ottimizzata per il tuo caso d'uso personalizzato e offrono anche molti altri vantaggi.
@@ -32,10 +33,12 @@ Ecco alcuni esempi:
 
 
 
+[[hardware-requirements]]
 == Requisiti hardware
 
 
 
+[[compute]]
 === Calcolare
 
 Google Cloud richiede periodicamente la convalida aggiornata delle piattaforme server dei partner con le nuove versioni di Anthos tramite il programma partner della piattaforma Anthos Ready.  È possibile trovare un elenco delle piattaforme server attualmente convalidate e delle versioni di Anthos supportate https://cloud.google.com/anthos/docs/resources/partner-platforms["Qui"^] .
@@ -55,6 +58,7 @@ La tabella seguente contiene le piattaforme server testate dagli ingegneri NetAp
 |===
 
 
+[[operating-system]]
 === Sistema operativo
 
 I nodi Anthos-on-bare-metal possono essere configurati con diverse distribuzioni Linux, a scelta del cliente, per adattarsi all'infrastruttura del proprio data center attuale.
@@ -78,6 +82,7 @@ La tabella seguente contiene un elenco dei sistemi operativi Linux utilizzati da
 |===
 
 
+[[additional-hardware]]
 === Hardware aggiuntivo
 
 Per completare l'implementazione di Anthos su bare metal come soluzione completamente convalidata, NetApp e i nostri ingegneri partner hanno testato componenti aggiuntivi del data center per networking e storage.
@@ -95,6 +100,7 @@ La tabella seguente contiene informazioni su questi componenti infrastrutturali 
 |===
 
 
+[[additional-software]]
 === Software aggiuntivo
 
 La tabella seguente include un elenco delle versioni software aggiuntive distribuite nell'ambiente di convalida.
@@ -122,6 +128,7 @@ NOTE: Questo ambiente multi-OS mostra interoperabilità con le versioni del sist
 
 
 
+[[infrastructure-support-resources]]
 === Risorse di supporto alle infrastrutture
 
 Prima di implementare Anthos su bare metal, è necessario predisporre la seguente infrastruttura:
