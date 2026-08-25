@@ -22,47 +22,47 @@ image:a-w-n-astra-trident.png["Figura che mostra il dialogo di input/output o ch
 
 Trident ha un ciclo di sviluppo rapido e, come Kubernetes, viene rilasciato quattro volte all'anno.
 
-La documentazione per l'ultima versione di Trident può essere trovata https://docs.netapp.com/us-en/trident/index.html["Qui"] .  È possibile trovare una matrice di supporto per la versione di Trident testata con quale distribuzione Kubernetes https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["Qui"] .
+Consulta la link:https://docs.netapp.com/us-en/trident/index.html["Documentazione Trident"^] per le informazioni sulla versione più recente. Una matrice di supporto per la compatibilità delle versioni di Trident con le distribuzioni Kubernetes è disponibile in link:https://docs.netapp.com/us-en/trident/trident-get-started/requirements.html#supported-frontends-orchestrators["Frontend supportati (orchestratori)"^].
 
 A partire dalla versione 20.04, la configurazione Trident viene eseguita dall'operatore Trident .  L'operatore semplifica le distribuzioni su larga scala e fornisce supporto aggiuntivo, tra cui l'auto-riparazione per i pod distribuiti come parte dell'installazione Trident .
 
 Con la versione 22.04 è stata resa disponibile una tabella Helm per semplificare l'installazione del Trident Operator.
 
-Per i dettagli sull'installazione Trident , vedere https://docs.netapp.com/us-en/trident/trident-get-started/kubernetes-deploy.html["Qui"] .
+Vedi link:https://docs.netapp.com/us-en/trident/trident-install/kubernetes-deploy.html["Dettagli sull'installazione di Trident"^] per maggiori informazioni.
 
 
 
 [[create-a-storage-system-backend]]
 == Creare un backend del sistema di archiviazione
 
-Dopo aver completato l'installazione di Trident Operator, è necessario configurare il backend per la specifica piattaforma di storage NetApp utilizzata.  Seguire il link sottostante per continuare l'installazione e la configurazione di Trident.link:https://docs.netapp.com/us-en/trident/trident-use/backends.html["Crea un backend."]
+Dopo aver completato l'installazione di Trident Operator, devi configurare il backend per la specifica piattaforma di storage NetApp che stai utilizzando. Segui il collegamento qui sotto per continuare la configurazione di Trident. link:https://docs.netapp.com/us-en/trident/trident-use/backends.html["Crea un backend"^]
 
 
 
 [[create-a-storage-class]]
 == Creare una classe di archiviazione
 
-Dopo aver creato il backend, è necessario creare una classe di archiviazione che gli utenti Kubernetes specificheranno quando desiderano un volume.  Gli utenti di Kubernetes effettuano il provisioning dei volumi utilizzando attestazioni di volume persistenti (PVC) che specificano una classe di archiviazione in base al nome.  Seguire il collegamento sottostante per creare una classe di archiviazione.link:https://docs.netapp.com/us-en/trident/trident-use/create-stor-class.html["Creare una classe di archiviazione"]
+Dopo aver creato il backend, devi creare una classe di storage che gli utenti di Kubernetes specificheranno quando vogliono un volume. Gli utenti di Kubernetes effettuano il provisioning dei volumi usando le persistent volume claim (PVC) che specificano una classe di storage per nome. Segui il link qui sotto per creare una classe di storage. link:https://docs.netapp.com/us-en/trident/trident-use/create-stor-class.html["Creare una classe di archiviazione"^]
 
 
 
 [[dynamically-provision-a-volume]]
 == Fornire dinamicamente un volume
 
-È necessario creare un oggetto PVC (Persistent Volume Claim) di Kubernetes utilizzando la classe di archiviazione per effettuare il provisioning dinamico di un volume.  Segui il link sottostante per creare un oggetto in PVC.link:https://docs.netapp.com/us-en/trident/trident-use/vol-provision.html["Creare un PVC"]
+Devi creare un oggetto Kubernetes Persistent Volume Claim (PVC) utilizzando la classe di storage per eseguire il provisioning dinamico di un volume. Segui il link qui sotto per creare un oggetto PVC. link:https://docs.netapp.com/us-en/trident/trident-use/vol-provision.html["Creare un PVC"^]
 
 
 
 [[use-the-volume]]
 == Usa il volume
 
-Il volume fornito nel passaggio precedente può essere utilizzato da un'applicazione montando il volume nel pod. Il collegamento seguente mostra un esempio.link:https://docs.netapp.com/us-en/trident/trident-use/vol-provision.html#sample-manifests["Montare il volume in un pod"]
+Il volume allocato nel passaggio precedente può essere utilizzato da un'applicazione montando il volume nel pod. Il link seguente mostra un esempio. link:https://docs.netapp.com/us-en/trident/trident-use/vol-provision.html#sample-manifests["Montare il volume in un pod"^]
 
 
 
 [[sample-provisioning]]
 == Esempio di provisioning
 
-link:anthos-trident-ontap-iscsi.html["Esempi di manifesti per il protocollo iSCSI, window=_blank"]
+link:anthos-trident-ontap-iscsi.html["Esempi di manifest per il protocollo iSCSI"]
 
-link:anthos-trident-ontap-nfs.html["Esempi di manifesti per il protocollo nfs, window=_blank"]
+link:anthos-trident-ontap-nfs.html["Esempi di manifest per il protocollo NFS"]

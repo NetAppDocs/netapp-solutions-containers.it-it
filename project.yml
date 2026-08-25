@@ -22,6 +22,7 @@ sidebar:
   - section: anthos
   - section: openshift
   - section: openshift-aws
+  - section: vsphere-kubernetes-service
   - title: Video
     url: "/videos/index.html"
     entries:
@@ -29,6 +30,8 @@ sidebar:
       url: "/videos/anthos-videos.html"
     - title: Red Hat OpenShift
       url: "/videos/openshift-videos.html"
+    - title: vSphere Kubernetes Service
+      url: "/videos/vks-videos.html"
   - title: Blog
     url: "/blogs.html"
   - title: Note legali

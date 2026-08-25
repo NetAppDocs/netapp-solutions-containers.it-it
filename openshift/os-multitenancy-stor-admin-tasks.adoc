@@ -20,12 +20,13 @@ Le seguenti risorse devono essere configurate da un amministratore di storage:
 . Vai su Archiviazione > VM di archiviazione e fai clic su Aggiungi.  Creare due SVM, una per il progetto 1 e l'altra per il progetto 2, fornendo i dettagli richiesti.  Creare anche un account vsadmin per gestire l'SVM e le sue risorse.
 
 
-image:redhat-openshift-041.png["Creazione SVM su ONTAP"]
+image::redhat-openshift-041.png[Creazione SVM su ONTAP]
 
 . Accedi al cluster Red Hat OpenShift come amministratore dello storage.
 . Creare il backend per il progetto-1 e mapparlo all'SVM dedicato al progetto.  NetApp consiglia di utilizzare l'account vsadmin dell'SVM per connettere il backend all'SVM anziché utilizzare l'amministratore del cluster ONTAP .
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | tridentctl -n trident create backend -f
 {
@@ -41,8 +42,6 @@ cat << EOF | tridentctl -n trident create backend -f
 EOF
 ----
 
-
-
 NOTE: Per questo esempio utilizziamo il driver ontap-nas.  Utilizzare il driver appropriato durante la creazione del backend in base al caso d'uso.
 
 
@@ -50,8 +49,9 @@ NOTE: Supponiamo che Trident sia installato nel progetto Trident.
 
 . Allo stesso modo, creare il backend Trident per il progetto 2 e mapparlo all'SVM dedicato al progetto 2.
 . Successivamente, creare le classi di archiviazione.  Creare la classe di archiviazione per il progetto 1 e configurarla per utilizzare i pool di archiviazione dal backend dedicato al progetto 1 impostando il parametro storagePools.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 apiVersion: storage.k8s.io/v1
@@ -66,8 +66,9 @@ EOF
 ----
 . Allo stesso modo, creare una classe di archiviazione per il progetto 2 e configurarla per utilizzare i pool di archiviazione dal backend dedicato al progetto 2.
 . Creare una ResourceQuota per limitare le risorse nel progetto 1 che richiedono spazio di archiviazione da storageclass dedicate ad altri progetti.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 kind: ResourceQuota

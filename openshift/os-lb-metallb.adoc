@@ -25,8 +25,8 @@ MetalLB è un bilanciatore del carico di rete auto-ospitato installato sul tuo c
 
 In base al modo in cui MetalLB annuncia l'indirizzo IP assegnato ai servizi LoadBalancer al di fuori del cluster OpenShift, funziona in due modalità:
 
-* *Modalità Livello 2.*  In questa modalità, un nodo nel cluster OpenShift assume la proprietà del servizio e risponde alle richieste ARP per quell'IP per renderlo raggiungibile al di fuori del cluster OpenShift.  Poiché solo il nodo pubblicizza l'IP, si verifica un collo di bottiglia nella larghezza di banda e si verificano limitazioni nel failover lento.  Per maggiori informazioni, consultare la documentazionelink:https://metallb.universe.tf/concepts/layer2/["Qui"] .
-* *Modalità BGP.*  In questa modalità, tutti i nodi del cluster OpenShift stabiliscono sessioni di peering BGP con un router e pubblicizzano i percorsi per inoltrare il traffico agli IP del servizio.  Il prerequisito per questo è integrare MetalLB con un router in quella rete.  A causa del meccanismo di hashing in BGP, si verificano alcune limitazioni quando cambia la mappatura IP-nodo per un servizio.  Per maggiori informazioni, fare riferimento alla documentazionelink:https://metallb.universe.tf/concepts/bgp/["Qui"] .
+* *Modalità Livello 2.* In questa modalità, un nodo del OpenShift cluster assume la proprietà del servizio e risponde alle richieste ARP per quell'indirizzo IP per renderlo raggiungibile dall'esterno del OpenShift cluster. Poiché solo il nodo pubblicizza l'indirizzo IP, si verifica un collo di bottiglia di larghezza di banda e limitazioni di failover lente. Per ulteriori informazioni, vedi link:https://metallb.universe.tf/concepts/layer2/["Documentazione sulla modalità Layer 2 di MetalLB"^].
+* *Modalità BGP.* In questa modalità, tutti i nodi del OpenShift cluster stabiliscono sessioni di peering BGP con un router e pubblicizzano le rotte per inoltrare il traffico agli IP del servizio. Il prerequisito è integrare MetalLB con un router in quella rete. A causa del meccanismo di hashing in BGP, presenta alcune limitazioni quando la mappatura IP-Nodo per un servizio cambia. Per ulteriori informazioni, consulta link:https://metallb.universe.tf/concepts/bgp/["Documentazione sulla modalità BGP di MetalLB"^].
 
 
 
@@ -116,6 +116,6 @@ configmap/config created
 . Ora, quando vengono creati i servizi di bilanciamento del carico, MetalLB assegna un IP esterno ai servizi e pubblicizza l'indirizzo IP rispondendo alle richieste ARP.
 +
 
-NOTE: Se desideri configurare MetalLB in modalità BGP, salta il passaggio 6 sopra e segui la procedura nella documentazione di MetalLBlink:https://metallb.universe.tf/concepts/bgp/["Qui"] .
+NOTE: Se vuoi configurare MetalLB in modalità BGP, salta il passaggio 6 sopra e segui la procedura in link:https://metallb.universe.tf/concepts/bgp/["Documentazione sulla modalità BGP di MetalLB"^].
 
 

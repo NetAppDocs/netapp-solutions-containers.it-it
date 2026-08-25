@@ -46,9 +46,9 @@ Per la configurazione del nodo di provisioning, il cliente crea interfacce bridg
 
 Le immagini seguenti illustrano l'ambiente sia durante la distribuzione IPI sia dopo il completamento della distribuzione.
 
-image:redhat-openshift-036.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-036.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
-image:redhat-openshift-037.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-037.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
 
 

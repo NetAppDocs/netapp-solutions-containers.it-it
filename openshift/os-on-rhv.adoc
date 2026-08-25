@@ -27,7 +27,7 @@ RHV offre le seguenti funzionalità:
 * *Sicurezza avanzata* Ereditate da RHV, le tecnologie Secure Virtualization (sVirt) e Security Enhanced Linux (SELinux) vengono impiegate da RHV per garantire una maggiore sicurezza e un rafforzamento degli host e delle VM.  Il vantaggio principale di queste funzionalità è l'isolamento logico di una VM e delle risorse ad essa associate.
 
 
-image:redhat-openshift-003.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-003.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
 
 

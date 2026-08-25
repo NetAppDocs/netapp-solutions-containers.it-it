@@ -31,7 +31,7 @@ NOTE: Un sistema F5 BIG-IP può essere distribuito su hardware dedicato, nel clo
 [[validated-releases]]
 == Versioni convalidate
 
-Questa soluzione sfrutta l'appliance virtuale distribuita in VMware vSphere.  La rete per l'appliance virtuale F5 Big-IP può essere configurata in una configurazione a due o tre bracci, in base all'ambiente di rete.  La distribuzione in questo documento si basa sulla configurazione a due bracci.  Ulteriori dettagli sulla configurazione dell'appliance virtuale per l'utilizzo con Anthos sono disponibili https://cloud.google.com/solutions/partners/installing-f5-big-ip-adc-for-gke-on-prem["Qui"] .
+Questa soluzione utilizza l'appliance virtuale distribuita in VMware vSphere. Il networking per l'appliance virtuale F5 Big-IP può essere configurato in una configurazione a due o tre bracci, in base al tuo ambiente di rete. La distribuzione descritta in questo documento si basa sulla configurazione a due bracci. Ulteriori dettagli sulla configurazione dell'appliance virtuale per l'utilizzo con Anthos sono disponibili nella link:https://cloud.google.com/solutions/partners/installing-f5-big-ip-adc-for-gke-on-prem["Guida all'installazione di F5 BIG-IP ADC per GKE On-Prem"^].
 
 Il Solutions Engineering Team di NetApp ha convalidato le versioni nella tabella seguente nel nostro laboratorio per funzionare con le distribuzioni di Anthos On-Prem:
 
@@ -53,7 +53,7 @@ Il Solutions Engineering Team di NetApp ha convalidato le versioni nella tabella
 
 Per installare F5 BIG-IP, completare i seguenti passaggi:
 
-. Scarica il file dell'applicazione virtuale Open Virtual Appliance (OVA) da F5 https://downloads.f5.com/esd/serveDownload.jsp?path=/big-ip/big-ip_v15.x/15.0.1/english/virtual-edition/&sw=BIG-IP&pro=big-ip_v15.x&ver=15.0.1&container=Virtual-Edition&file=BIGIP-15.0.1-0.0.11.ALL-vmware.ova["Qui"] .
+. Scarica il file dell'applicazione virtuale Open Virtual Appliance (OVA) da link:https://downloads.f5.com/esd/serveDownload.jsp?path=/big-ip/big-ip_v15.x/15.0.1/english/virtual-edition/&sw=BIG-IP&pro=big-ip_v15.x&ver=15.0.1&container=Virtual-Edition&file=BIGIP-15.0.1-0.0.11.ALL-vmware.ova["Portale di download F5"^].
 +
 
 NOTE: Per scaricare l'appliance, l'utente deve registrarsi su F5.  Forniscono una licenza demo di 30 giorni per Big-IP Virtual Edition Load Balancer.  NetApp consiglia una licenza permanente da 10 Gbps per l'implementazione in produzione di un'appliance.

@@ -25,7 +25,7 @@ Questo documento descriverà come utilizzare NetApp ONTAP con Red Hat OpenShift 
 
 **UN.  Crea un VolumeSnapshotClass Salva il seguente manifesto in un file denominato volume-snapshot-class.yaml
 
-[source]
+[source, yaml]
 ----
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
@@ -36,11 +36,11 @@ deletionPolicy: Delete
 ----
 Crea uno snapshot utilizzando il manifesto sopra.
 
-image:redhat-openshift-container-rosa-020.png["classe snapshot"]
+image::redhat-openshift-container-rosa-020.png[classe snapshot]
 
 **B.  Successivamente, crea uno snapshot** Crea uno snapshot del PVC esistente creando VolumeSnapshot per acquisire una copia puntuale dei tuoi dati PostgreSQL.  In questo modo viene creato uno snapshot FSx che non occupa quasi spazio nel backend del file system.  Salvare il seguente manifesto in un file denominato volume-snapshot.yaml:
 
-[source]
+[source, yaml]
 ----
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshot
@@ -55,13 +55,13 @@ spec:
 
 Eliminare il database per simulare la perdita di dati (la perdita di dati può verificarsi per diversi motivi, qui la simuliamo semplicemente eliminando il database)
 
-image:redhat-openshift-container-rosa-021.png["istantanea del volume"]
+image::redhat-openshift-container-rosa-021.png[istantanea del volume]
 
 **D.  Eliminare il database per simulare la perdita di dati (la perdita di dati può verificarsi per diversi motivi, qui la simuliamo semplicemente eliminando il database)**
 
-image:redhat-openshift-container-rosa-022.png["connessione al database"]
+image::redhat-openshift-container-rosa-022.png[connessione al database]
 
-image:redhat-openshift-container-rosa-023.png["eliminare il database"]
+image::redhat-openshift-container-rosa-023.png[eliminare il database]
 
 
 
@@ -74,7 +74,7 @@ image:redhat-openshift-container-rosa-023.png["eliminare il database"]
 
 Per ripristinare il volume allo stato precedente, è necessario creare un nuovo PVC basato sui dati presenti nello snapshot acquisito.  Per fare ciò, salva il seguente manifesto in un file denominato pvc-clone.yaml
 
-[source]
+[source, yaml]
 ----
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -94,33 +94,33 @@ spec:
 ----
 Creare un clone del volume creando un PVC utilizzando lo snapshot come origine utilizzando il manifesto sopra.  Applicare il manifesto e assicurarsi che il clone venga creato.
 
-image:redhat-openshift-container-rosa-024.png["clone di PostgreSQL da snapshot"]
+image::redhat-openshift-container-rosa-024.png[clone di PostgreSQL da snapshot]
 
 **B.  Elimina l'installazione originale di PostgreSQL**
 
-image:redhat-openshift-container-rosa-025.png["eliminazione dell'app postgresql"]
+image::redhat-openshift-container-rosa-025.png[eliminazione dell'app postgresql]
 
 **C.  Crea una nuova applicazione postgresql utilizzando il nuovo clone PVC**
 
-[source]
+[source, bash]
 ----
 $ helm install postgresql bitnami/postgresql --set primary.persistence.enabled=true --set primary.persistence.existingClaim=postgresql-volume-clone -n postgresql
 ----
-image:redhat-openshift-container-rosa-026.png["nuova installazione di postgresql"]
+image::redhat-openshift-container-rosa-026.png[nuova installazione di postgresql]
 
 **D.  Verificare che il pod dell'applicazione sia in esecuzione**
 
-image:redhat-openshift-container-rosa-027.png["nuova installazione di postgresql"]
+image::redhat-openshift-container-rosa-027.png[nuova installazione di postgresql]
 
 **e.  Verificare che il pod utilizzi il clone come PVC**
 
-image:redhat-openshift-container-rosa-028.png["descrizione nuova installazione postgresql"]
+image::redhat-openshift-container-rosa-028.png[descrizione nuova installazione postgresql]
 
-image:redhat-openshift-container-rosa-029.png["il nuovo pvc è il clone"]
+image::redhat-openshift-container-rosa-029.png[il nuovo pvc è il clone]
 
 f) Per convalidare che il database sia stato ripristinato come previsto, tornare alla console del contenitore e visualizzare i database esistenti
 
-image:redhat-openshift-container-rosa-030.png["database ripristinato"]
+image::redhat-openshift-container-rosa-030.png[database ripristinato]
 
 
 

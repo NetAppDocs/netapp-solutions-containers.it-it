@@ -16,9 +16,9 @@ summary: 'Il software NetApp Element offre prestazioni modulari e scalabili, con
 [role="lead"]
 Il software NetApp Element offre prestazioni modulari e scalabili, con ogni nodo di storage che fornisce capacità e throughput garantiti all'ambiente.  I sistemi NetApp Element possono essere scalati da 4 a 100 nodi in un singolo cluster e offrono una serie di funzionalità avanzate di gestione dello storage.
 
-image:redhat-openshift-064.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-064.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
-Per ulteriori informazioni sui sistemi di storage NetApp Element , visitare il sito https://www.netapp.com/data-storage/solidfire/["Sito web NetApp Solidfire"^] .
+Per ulteriori informazioni sui sistemi storage NetApp Element, visita il link:https://www.netapp.com/data-storage/solidfire/["Sito web NetApp Solidfire"^].
 
 
 

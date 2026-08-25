@@ -29,7 +29,7 @@ Per maggiori informazioni su OSP vederelink:https://www.redhat.com/en/technologi
 
 I servizi della piattaforma OpenStack vengono distribuiti come contenitori, il che isola i servizi l'uno dall'altro e consente facili aggiornamenti.  La piattaforma OpenStack utilizza un set di container creati e gestiti con Kolla.  La distribuzione dei servizi viene eseguita estraendo le immagini dei container dal Red Hat Custom Portal.  Questi contenitori di servizi vengono gestiti tramite il comando Podman e vengono distribuiti, configurati e mantenuti con Red Hat OpenStack Director.
 
-image:redhat-openshift-034.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-034.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
 [cols="15%, 15%, 70%"]
 |===

@@ -34,7 +34,7 @@ Red Hat OpenShift Container Platform unisce sviluppo e operazioni IT in un'unica
 * *Sicurezza e catalogo dei container* OpenShift offre multi-tenancy e protegge l'utente dall'esecuzione di codice dannoso utilizzando la sicurezza consolidata con Security-Enhanced Linux (SELinux), CGroups e Secure Computing Mode (seccomp) per isolare e proteggere i container.  Fornisce inoltre la crittografia tramite certificati TLS per i vari sottosistemi e l'accesso ai container certificati Red Hat (access.redhat.com/containers) che vengono scansionati e classificati con particolare attenzione alla sicurezza per fornire agli utenti finali container applicativi certificati, affidabili e sicuri.
 
 
-image:redhat-openshift-004.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-004.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
 
 
@@ -55,13 +55,13 @@ L'implementazione dell'infrastruttura di provisioning dell'installatore (IPI) di
 . Visita Red Hat OpenShiftlink:https://www.openshift.com["sito web"^] ed effettua l'accesso con le tue credenziali SSO.
 . Seleziona l'ambiente in cui desideri distribuire Red Hat OpenShift.
 +
-image:redhat-openshift-008.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-008.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
 . Nella schermata successiva scarica il programma di installazione, il segreto pull univoco e gli strumenti CLI per la gestione.
 +
-image:redhat-openshift-009.png["Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto"]
+image::redhat-openshift-009.png[Figura che mostra il dialogo di input/output o che rappresenta il contenuto scritto]
 
-. Segui illink:https://docs.openshift.com/container-platform/4.7/installing/index.html["istruzioni di installazione"] fornito da Red Hat per l'implementazione nell'ambiente di tua scelta.
+. Segui le istruzioni link:https://docs.openshift.com/container-platform/4.7/installing/index.html["istruzioni di installazione"^] fornite da Red Hat per effettuare la distribuzione nell'ambiente di tua scelta.
 
 
 

@@ -18,15 +18,17 @@ Le seguenti attività vengono eseguite dall'amministratore del cluster Red Hat O
 
 . Accedi al cluster Red Hat OpenShift come cluster-admin.
 . Crea due progetti corrispondenti a progetti diversi.
-+
-[source, console]
+
+
+[listing]
 ----
 oc create namespace project-1
 oc create namespace project-2
 ----
 . Creare il ruolo di sviluppatore per il progetto-1.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 apiVersion: rbac.authorization.k8s.io/v1
@@ -82,15 +84,14 @@ rules:
 EOF
 ----
 
-
-
 NOTE: La definizione del ruolo fornita in questa sezione è solo un esempio.  I ruoli degli sviluppatori devono essere definiti in base ai requisiti dell'utente finale.
 
 . Allo stesso modo, creare ruoli di sviluppatore per il progetto 2.
 . Tutte le risorse di storage OpenShift e NetApp sono solitamente gestite da un amministratore di storage.  L'accesso per gli amministratori di storage è controllato dal ruolo di operatore Trident creato al momento dell'installazione Trident .  Oltre a ciò, l'amministratore dello storage necessita anche dell'accesso a ResourceQuotas per controllare come viene utilizzato lo storage.
 . Creare un ruolo per la gestione di ResourceQuotas in tutti i progetti del cluster per associarlo all'amministratore di storage.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 kind: ClusterRole
@@ -123,8 +124,9 @@ ocp-project-1               ocp-project-1-user
 ocp-project-2               ocp-project-2-user
 ....
 . Configurare ClusterRoleBindings per gli amministratori di storage.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 kind: ClusterRoleBinding
@@ -155,13 +157,12 @@ roleRef:
 EOF
 ----
 
-
-
 NOTE: Per gli amministratori di storage è necessario associare due ruoli: trident-operator e resource-quotas.
 
 . Creare RoleBindings per gli sviluppatori che associano il ruolo developer-project-1 al gruppo corrispondente (ocp-project-1) in project-1.
-+
-[source, console]
+
+
+[listing]
 ----
 cat << EOF | oc create -f -
 kind: RoleBinding
@@ -179,7 +180,5 @@ roleRef:
   name: developer-project-1
 EOF
 ----
-
-
 . Allo stesso modo, creare RoleBindings per gli sviluppatori che associano i ruoli degli sviluppatori al gruppo di utenti corrispondente nel progetto 2.
 

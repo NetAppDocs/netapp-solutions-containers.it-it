@@ -1,0 +1,543 @@
+---
+sidebar: sidebar 
+permalink: vsphere-kubernetes-service/install-trident.html 
+keywords: trident, install, helm, operator, vks, storage provisioner 
+summary: Installa NetApp Trident in un cluster vSphere Kubernetes Service per abilitare il provisioning dinamico dello storage. 
+---
+= Installa NetApp Trident in un cluster VKS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Installa NetApp Trident come provisioner di storage dinamico nel tuo cluster vSphere Kubernetes Service per integrare lo storage NetApp ONTAP con i tuoi carichi di lavoro Kubernetes.
+
+.Prima di iniziare
+* Assicurati che il tuo ONTAP cluster sia configurato e connesso al tuo ambiente VMware Kubernetes.
+* Assicurati che il tuo cluster VKS abbia gli strumenti iSCSI o NVMe installati se i tuoi carichi di lavoro utilizzeranno questi protocolli per lo storage.
+* Assicurati di avere  `kubectl` installato su una macchina dalla quale puoi connetterti al cluster VKS utilizzando il file kubeconfig.
++
+image::vks-004.png[Download kubeconfig dalla scheda Risorse]
+
+
+
+.Passaggi
+. Installa l'operatore Trident utilizzando un chart Helm seguendo le istruzioni nella documentazione di Trident:
++
+link:https://docs.netapp.com/us-en/trident/trident-install/kubernetes-deploy-helm.html["https://docs.netapp.com/us-en/trident/trident-install/kubernetes-deploy-helm.html"^]
+
++
+.Mostra esempio
+[%collapsible]
+====
+[source, cli]
+----
+helm install trident netapp-trident/trident-operator --version 100.2606.0 --create-namespace --namespace trident --kubeconfig=/path/to/your-kubeconfig-file
+----
+Per abilitare la registrazione di debug, aggiungi  `--set tridentDebug=true`:
+
+[source, cli]
+----
+helm install trident netapp-trident/trident-operator --version 100.2606.0 --create-namespace --namespace trident --set tridentDebug=true --kubeconfig=/path/to/your-kubeconfig-file
+----
+====
++
+
+NOTE: Puoi anche installare Trident manualmente usando il Trident Operator. Consulta la documentazione di Trident per le procedure: link:https://docs.netapp.com/us-en/trident/trident-install/kubernetes-deploy-operator.html["Distribuisci manualmente l'operatore Trident"^]
+
+. Verificare che tutti i pod di Trident siano in esecuzione nel cluster.
++
+.Mostra esempio
+[%collapsible]
+====
+[source, cli]
+----
+kubectl get pods -n trident
+----
+
+NOTE: I pod di Trident potrebbero non essere creati a questo punto. Se descrivi l'oggetto ReplicaSet, potresti vedere un errore relativo alla violazione di PodSecurity come mostrato di seguito. Questo errore si verifica perché il namespace  `trident` creato durante l'installazione applica lo standard Kubernetes restricted Pod Security Standard (PSS). L'operatore Trident richiede privilegi di sistema elevati per gestire lo storage dell'host e non può essere eseguito con le rigide limitazioni di un profilo con restrizioni. Per risolvere questo problema, assegna al namespace  `trident` un profilo privilegiato in modo che il controller ReplicaSet possa avviare correttamente i pod.
+
+[source, text]
+----
+Warning  FailedCreate  25s (x5 over 64s)  replicaset-controller  (combined from similar events): Error creating: pods "trident-operator-5cbf7f857-z7ztd" is forbidden: violates PodSecurity "restricted:latest": allowPrivilegeEscalation != false (container "trident-operator" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "trident-operator" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "trident-operator" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "trident-operator" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+----
+Applica le etichette di ammissione di sicurezza dei pod Kubernetes integrate allo spazio dei nomi  `trident` per esentarlo dai vincoli del profilo con restrizioni:
+
+[source, cli]
+----
+kubectl label namespace trident pod-security.kubernetes.io/enforce=privileged --overwrite
+kubectl label namespace trident pod-security.kubernetes.io/audit=privileged --overwrite
+kubectl label namespace trident pod-security.kubernetes.io/warn=privileged --overwrite
+----
+[source, cli]
+----
+kubectl get pods -n trident
+----
+image::vks-trident-install-001.png[Trident installato]
+
+====
+
+
+
+
+[[prepare-storage-backend-and-storageclass-configuration-files-for-your-environment]]
+== Prepara i file di backend dello storage e di configurazione StorageClass per il tuo ambiente
+
+. Configura un backend Trident per ONTAP definendo i dettagli di connessione e i parametri di storage necessari.
+. Definisci classi di storage in Kubernetes che mappano i backend di storage NetApp. Queste classi specificano parametri come le caratteristiche prestazionali e le politiche di replica.
++
+Definisci i backend e le classi di storage Trident per i seguenti protocolli, in base alle esigenze dei tuoi carichi di lavoro:
+
++
+** NAS (driver ontap-nas)
+** NAS Economy (driver ontap-nas-economy)
+** SAN (driver ontap-san) per iSCSI, FC o protocolli NVMe
+** SAN Economy (driver ontap-san-economy) per iSCSI
++
+[role="tabbed-block"]
+====
+.NAS
+--
+Crea un TridentBackendConfig e un StorageClass per ONTAP NAS per abilitare il provisioning di storage persistente basato su NFS. La configurazione del backend include le credenziali memorizzate in un Secret di Kubernetes e fa riferimento al tuo ONTAP SVM e al LIF di gestione.
+
+Esempio di segreto del backend e file di configurazione con metodo di autenticazione tramite nome utente e password (salva come  `tbc-nas.yaml`):
+
+[source, yaml]
+----
+# tbc-nas.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tbc-nas-secret
+  namespace: trident
+type: Opaque
+data:
+  username: "<base64-encoded cluster admin username>"
+  password: "<base64-encoded cluster admin password>"
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: tbc-nas
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-nas
+  managementLIF: <ONTAP management LIF>
+  backendName: tbc-nas
+  svm: <your SVM name>
+  storagePrefix: <your prefix for all volume names created using this backend configuration>
+  defaults:
+    nameTemplate: "{{ .config.StoragePrefix }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
+  credentials:
+    name: tbc-nas-secret
+----
+Esempio di segreto del backend e file di configurazione che utilizza l'autenticazione tramite certificato client (salva come  `tbc-nas.yaml`):
+
+[source, yaml]
+----
+# tbc-nas.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ontap-nas-secret
+  namespace: trident
+type: Opaque
+stringData:
+  clientPrivateKey: <client private key value>
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: tbc-nas
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-nas
+  managementLIF: <ONTAP management LIF>
+  backendName: tbc-nas
+  svm: <your SVM name>
+  storagePrefix: <your prefix for all volume names created using this backend configuration>
+  credentials:
+    name: ontap-nas-secret
+  clientCertificate: <client certificate>
+----
+StorageClass definition (salva come  `sc-nas.yaml`):
+
+[NOTE]
+====
+`mountOptions` è un parametro opzionale che specifica opzioni di montaggio aggiuntive per i volumi NFS. L'opzione  `nconnect` consente più connessioni TCP parallele per un singolo mount NFS, il che può migliorare le prestazioni per carichi di lavoro ad alto throughput. Il valore predefinito è 1, ma può essere aumentato fino al massimo consentito dal sistema ONTAP.
+
+ONTAP supporta fino a 16 connessioni per un singolo mount NFS su un client compatibile con nconnect. Trident passa le opzioni di mount direttamente ai nodi worker di Kubernetes, quindi scegli un valore supportato sia dal client NFS del nodo worker che da ONTAP; l'esempio seguente utilizza quattro connessioni.
+
+====
+[source, yaml]
+----
+# sc-nas.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-nas
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "ontap-nas"
+  media: "ssd"
+  provisioningType: "thin"
+  snapshots: "true"
+allowVolumeExpansion: true
+mountOptions:
+- nconnect=4
+----
+--
+.NAS Economy
+--
+Crea un TridentBackendConfig e una StorageClass per il driver ONTAP NAS Economy per abilitare il provisioning dello storage persistente basato su NFS utilizzando i qtree. La configurazione del backend include le credenziali memorizzate in un Secret di Kubernetes e fa riferimento al tuo ONTAP SVM e al LIF di gestione.
+
+Esempio di segreto del backend e file di configurazione con metodo di autenticazione tramite nome utente e password (salva come  `tbc-nas-economy.yaml`):
+
+[source, yaml]
+----
+# tbc-nas-economy.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tbc-nas-economy-secret
+  namespace: trident
+type: Opaque
+data:
+  username: "<base64-encoded cluster admin username>"
+  password: "<base64-encoded cluster admin password>"
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: tbc-nas-economy
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-nas-economy
+  managementLIF: <ONTAP management LIF>
+  backendName: tbc-nas-eco
+  svm: <your SVM name>
+  storagePrefix: <your prefix for all volume names created using this backend configuration>
+  defaults:
+    nameTemplate: "{{ .config.StoragePrefix }}_{{ .volume.Namespace }}_{{ .volume.RequestName }}"
+  credentials:
+    name: tbc-nas-economy-secret
+----
+StorageClass definition (salva come  `sc-nas-economy.yaml`):
+
+[source, yaml]
+----
+# sc-nas-economy.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-nas-economy
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "ontap-nas-economy"
+  media: "ssd"
+  provisioningType: "thin"
+allowVolumeExpansion: true
+mountOptions:
+- nconnect=4
+----
+--
+.iSCSI SAN
+--
+Crea un TridentBackendConfig e una StorageClass per ONTAP SAN con iSCSI per abilitare il provisioning dello storage a blocchi basato su iSCSI. La configurazione del backend utilizza il driver ontap-san e include le credenziali memorizzate in un Secret di Kubernetes. Il parametro  `sanType` predefinito è il protocollo iSCSI se omesso.
+
+Segreto del backend e file di configurazione del backend che utilizzano l'autenticazione tramite nome utente e password (salva come  `tbc-iscsi.yaml`):
+
+[source, yaml]
+----
+# tbc-iscsi.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-tbc-ontap-iscsi-secret
+  namespace: trident
+type: Opaque
+data:
+  username: "<base64-encoded cluster admin username>"
+  password: "<base64-encoded cluster admin password>"
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: ontap-iscsi
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-san
+  managementLIF: <ONTAP management LIF>
+  backendName: ontap-iscsi
+  svm: <your SVM name>
+  credentials:
+    name: backend-tbc-ontap-iscsi-secret
+----
+Segreto del backend e file di configurazione del backend che utilizzano il metodo di autenticazione tramite certificato client (salva come  `tbc-iscsi.yaml`):
+
+[source, yaml]
+----
+# tbc-iscsi.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-tbc-ontap-iscsi-secret
+  namespace: trident
+type: Opaque
+stringData:
+  clientPrivateKey: <client private key>
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: ontap-iscsi
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-san
+  managementLIF: <ONTAP management LIF>
+  backendName: ontap-iscsi
+  svm: <your SVM name>
+  credentials:
+    name: backend-tbc-ontap-iscsi-secret
+  clientCertificate: <client certificate>
+----
+StorageClass definition (salva come  `sc-iscsi.yaml`):
+
+[source, yaml]
+----
+# sc-iscsi.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-iscsi
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "ontap-san"
+  media: "ssd"
+  provisioningType: "thin"
+  fsType: ext4
+  snapshots: "true"
+allowVolumeExpansion: true
+----
+--
+.NVMe SAN
+--
+Crea un TridentBackendConfig e un StorageClass per ONTAP SAN con NVMe per abilitare il provisioning dello storage a blocchi basato su NVMe. La configurazione del backend utilizza il driver ontap-san e include le credenziali memorizzate in un Secret di Kubernetes. Il  `sanType` parametro deve essere impostato su  `nvme`.
+
+Segreto del backend e file di configurazione del backend che utilizzano l'autenticazione tramite nome utente e password (salva come  `tbc-nvme.yaml`):
+
+[source, yaml]
+----
+# tbc-nvme.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-tbc-ontap-nvme-secret
+  namespace: trident
+type: Opaque
+data:
+  username: "<base64-encoded cluster admin username>"
+  password: "<base64-encoded cluster admin password>"
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: ontap-nvme
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-san
+  sanType: nvme
+  managementLIF: <ONTAP management LIF>
+  backendName: ontap-nvme
+  svm: <your SVM name>
+  credentials:
+    name: backend-tbc-ontap-nvme-secret
+----
+Segreto del backend e file di configurazione del backend che utilizzano il metodo di autenticazione tramite certificato client (salva come  `tbc-nvme.yaml`):
+
+[source, yaml]
+----
+# tbc-nvme.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backend-tbc-ontap-nvme-secret
+  namespace: trident
+type: Opaque
+stringData:
+  clientPrivateKey: <client private key>
+---
+apiVersion: trident.netapp.io/v1
+kind: TridentBackendConfig
+metadata:
+  name: ontap-nvme
+  namespace: trident
+spec:
+  version: 1
+  storageDriverName: ontap-san
+  sanType: nvme
+  managementLIF: <ONTAP management LIF>
+  backendName: ontap-nvme
+  svm: <your SVM name>
+  credentials:
+    name: backend-tbc-ontap-nvme-secret
+  clientCertificate: <client certificate>
+----
+StorageClass definition (salva come  `sc-nvme.yaml`):
+
+[source, yaml]
+----
+# sc-nvme.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-nvme
+provisioner: csi.trident.netapp.io
+parameters:
+  backendType: "ontap-san"
+  media: "ssd"
+  provisioningType: "thin"
+  fsType: ext4
+  snapshots: "true"
+allowVolumeExpansion: true
+----
+--
+====
+
+
+
+
+Consulta la documentazione di Trident per ulteriori esempi di file YAML e informazioni sulle modalità di accesso e sulle modalità di volume supportate dai driver SAN e NAS.
+
+* link:https://docs.netapp.com/us-en/trident/trident-use/ontap-nas.html["Esempi che utilizzano driver NAS"^]
+* link:https://docs.netapp.com/us-en/trident/trident-use/ontap-san.html["Esempi che utilizzano driver SAN"^]
+
+
+
+
+[[create-a-volumesnapshotclass-configuration-file]]
+== Crea un file di configurazione VolumeSnapshotClass
+
+Crea una definizione VolumeSnapshotClass. Questa configurazione abilita le operazioni basate su snapshot per i volumi persistenti.
+
+VolumeSnapshotClass definition (salva come  `snapshot-class.yaml`):
+
+[source, yaml]
+----
+# snapshot-class.yaml
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: trident-snapshotclass
+driver: csi.trident.netapp.io
+deletionPolicy: Retain
+----
+
+
+[[apply-the-configuration-files-to-your-cluster]]
+== Applica i file di configurazione al tuo cluster
+
+Applica i file di configurazione che hai creato nei passaggi precedenti al cluster vSphere Kubernetes Service usando  `kubectl`. Questo crea i segreti necessari, le configurazioni di backend, le classi di storage e la classe snapshot nel tuo cluster.
+
+.Passaggi
+. Applica i file TridentBackendConfig e StorageClass per ciascun protocollo configurato.
++
+[source, bash]
+----
+kubectl apply -f tbc-nas.yaml -n trident
+kubectl apply -f sc-nas.yaml
+
+kubectl apply -f tbc-nas-economy.yaml -n trident
+kubectl apply -f sc-nas-economy.yaml
+
+kubectl apply -f tbc-iscsi.yaml -n trident
+kubectl apply -f sc-iscsi.yaml
+
+kubectl apply -f tbc-nvme.yaml -n trident
+kubectl apply -f sc-nvme.yaml
+
+kubectl apply -f snapshot-class.yaml
+----
+. Verificare che le risorse siano state create correttamente.
++
+Controlla gli oggetti TridentBackendConfig:
+
++
+[source, bash]
+----
+kubectl get tbc -n trident
+----
++
+Controlla gli oggetti StorageClass:
+
++
+[source, bash]
+----
+kubectl get storageclass
+----
++
+Verifica VolumeSnapshotClass:
+
++
+[source, bash]
+----
+kubectl get volumesnapshotclass
+----
+
+
+
+
+[[set-the-default-trident-storage-and-snapshot-classes]]
+== Imposta le classi di storage e snapshot predefinite di Trident
+
+Imposta Trident StorageClass e VolumeSnapshotClass come predefiniti nel cluster vSphere.
+
+.Passaggi
+. Imposta il StorageClass predefinito di Trident.
++
+Imposta una StorageClass supportata da Trident come predefinita del cluster, in modo che le PersistentVolumeClaims la utilizzino automaticamente quando non viene specificata alcuna classe di storage.
+
++
+Assicurati che solo uno StorageClass sia impostato come predefinito. Se un altro StorageClass è già impostato come predefinito, imposta la sua annotazione su  `false`.
+
++
+Dalla CLI:
+
++
+[source, bash]
+----
+kubectl patch storageclass <storage class name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+----
+. Imposta la VolumeSnapshotClass predefinita di Trident.
++
+Imposta un VolumeSnapshotClass supportato da Trident come predefinito del cluster per abilitare le operazioni basate su snapshot per i volumi persistenti. Questo garantisce che le VolumeSnapshots utilizzino automaticamente il driver CSI Trident quando non viene specificata alcuna classe di snapshot.
+
++
+Assicurati che solo un VolumeSnapshotClass sia impostato come predefinito. Se un altro VolumeSnapshotClass è già impostato come predefinito, imposta la sua annotazione su  `false`.
+
++
+Dalla CLI:
+
++
+[source, bash]
+----
+kubectl patch volumesnapshotclass <snapshot class name> --type=merge -p '{"metadata":{"annotations":{"snapshot.storage.kubernetes.io/is-default-class":"true"}}}'
+----
+
+
+
+
+[[use-kubernetes-persistent-volume-claims-to-request-storage-for-workloads]]
+== Utilizza Kubernetes Persistent Volume Claims per richiedere storage per i carichi di lavoro
+
+Trident esegue automaticamente il provisioning dei volumi necessari dallo storage NetApp di backend. Consulta link:deploy-vks-workloads.html["Distribuisci i carichi di lavoro con storage persistente"] per esempi di distribuzione di un carico di lavoro con PVC in un cluster VKS.
