@@ -18,15 +18,22 @@ Scopri l'integrazione di vSphere Kubernetes Service con NetApp attraverso una se
 
 
 
-[[deploying-a-vsphere-kubernetes-service-cluster-with-netapp-storage]]
-== Distribuire un cluster Kubernetes di vSphere con storage NetApp
+[[create-a-vsphere-kubernetes-cluster-on-a-supervisor-cluster]]
+== Crea un cluster Kubernetes vSphere su un cluster supervisor
 
-.Distribuire un cluster Kubernetes di vSphere con storage NetApp
+.Crea un cluster Kubernetes vSphere su un cluster supervisor
 video::4ef64b3c-7a68-41d5-bacf-b4a8012b49f8[panopto,width=360]
 
 
-[[deploying-workloads-with-ontap-persistent-storage-using-trident]]
-== Distribuire carichi di lavoro con storage persistente ONTAP usando Trident
+[[create-a-vsphere-kubernetes-cluster-with-vcf-automation]]
+== Crea un vSphere Kubernetes cluster con VCF Automation
 
-.Distribuire carichi di lavoro con storage persistente ONTAP usando Trident
+.Crea un vSphere Kubernetes cluster con VCF Automation
+video::571ced1a-58e8-4bf4-9c24-b4b10118bc22[panopto,width=360]
+
+
+[[deploying-workloads-on-a-vks-cluster-backed-by-ontap-persistent-storage-using-trident]]
+== Distribuire carichi di lavoro su un cluster VKS supportato da storage persistente ONTAP usando Trident
+
+.Distribuire carichi di lavoro su un cluster VKS supportato da storage persistente ONTAP usando Trident
 video::eb8bd0c0-a1fe-4288-a575-b4ac00e004a9[panopto,width=360]

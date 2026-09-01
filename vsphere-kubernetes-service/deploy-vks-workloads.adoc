@@ -319,5 +319,5 @@ SELECT * FROM employees;
 
 Il seguente video mostra l'installazione di Trident su un cluster Kubernetes vSphere e la distribuzione di un database PostgreSQL con storage persistente utilizzando Trident.
 
-.Distribuire carichi di lavoro con storage persistente ONTAP usando Trident
+.Distribuire carichi di lavoro su un cluster vSphere Kubernetes Service supportato da storage persistente ONTAP usando Trident
 video::eb8bd0c0-a1fe-4288-a575-b4ac00e004a9[panopto,width=360]

@@ -3,9 +3,9 @@ indexpage:
   title: Guarda video e demo sui container con NetApp
   summary: Serie di video e demo che illustrano le funzionalità di molte delle soluzioni
     container di NetApp
-  lead: Scopri la completa libreria video di NetApp che illustra le soluzioni container
-    sulle piattaforme Anthos e OpenShift. Ogni raccolta si concentra su casi d'uso
-    e scenari di integrazione specifici.
+  lead: Scopri la vasta libreria video di NetApp che mostra le soluzioni container
+    sulle piattaforme Anthos, OpenShift e vSphere Kubernetes Service. Ogni raccolta
+    si concentra su casi d'uso specifici e scenari di integrazione.
   tiles:
   - title: Anthos con NetApp
     links:
@@ -27,8 +27,10 @@ indexpage:
       url: openshift-videos.html#cloud-and-hybrid-integrations
   - title: vSphere Kubernetes Service con storage NetApp
     links:
-    - title: Distribuire il servizio Kubernetes di vSphere con lo storage NetApp
-      url: vks-videos.html#deploying-a-vsphere-kubernetes-service-cluster-with-netapp-storage
-    - title: Distribuire i carichi di lavoro di Kubernetes Service di vSphere con
-        lo storage NetApp
-      url: vks-videos.html#deploying-workloads-with-ontap-persistent-storage-using-trident
+    - title: Crea un cluster Kubernetes vSphere su un cluster supervisor
+      url: vks-videos.html#create-a-vsphere-kubernetes-cluster-on-a-supervisor-cluster
+    - title: Crea un vSphere Kubernetes cluster con VCF Automation
+      url: vks-videos.html#create-a-vsphere-kubernetes-cluster-with-vcf-automation
+    - title: Distribuisci carichi di lavoro con lo storage persistente ONTAP usando
+        Trident
+      url: vks-videos.html#deploying-workloads-on-a-vks-cluster-backed-by-ontap-persistent-storage-using-trident
