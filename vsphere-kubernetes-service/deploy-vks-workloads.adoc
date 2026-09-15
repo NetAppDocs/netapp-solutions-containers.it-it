@@ -211,8 +211,12 @@ Dopo aver distribuito l'applicazione, verifica che i pod siano in esecuzione e c
 kubectl get all -n <namespace>
 kubectl get pvc -n <namespace>
 ----
+.Mostra esempio
+[%collapsible]
+====
 image::vks-workload-001.png[Carico di lavoro distribuito con storage persistente]
 
+====
 A seconda del protocollo utilizzato, lo storage di backend è un volume, qtree o LUN. Puoi verificare lo storage fornito nel sistema ONTAP descrivendo il PersistentVolume (PV) per recuperare il nome del volume interno e poi usarlo nei comandi CLI di ONTAP per ottenere i dettagli dello storage. Usa il seguente comando per descrivere il PV e recuperare il nome del volume interno:
 
 [source, bash]
@@ -220,6 +224,8 @@ A seconda del protocollo utilizzato, lo storage di backend è un volume, qtree o
 kubectl describe pv/<pv-name>
 ----
 .Mostra esempio
+[%collapsible]
+====
 image::vks-workload-002.png[Nome volume interno per volume NAS]
 
 image::vks-workload-003.png[Nome volume interno per SAN LUN]
@@ -242,10 +248,14 @@ lun show -vserver <vserver> -volume <internal-volume-name>
 ----
 image::vks-workload-005.png[Output della CLI ONTAP per la LUN SAN]
 
+====
 Se hai utilizzato  `nconnect` mount options nella classe di storage NAS o NAS Economy, puoi verificare il numero di connessioni TCP attive dal nodo worker al server di storage.
 
 Innanzitutto, elenca le configurazioni del backend Trident per trovare il nome del backend, quindi descrivilo per recuperare il nome del vserver e il LIF dei dati:
 
+.Mostra esempio
+[%collapsible]
+====
 [source, bash]
 ----
 kubectl get tbc -n trident
@@ -257,11 +267,14 @@ Accedi quindi al cluster ONTAP ed esegui il seguente comando, sostituendo la dat
 ----
 network connections active show -local-address <data-lif> -local-port 2049
 ----
-.Mostra esempio
 image::vks-workload-006.png[Output della CLI ONTAP per le connessioni attive]
 
+====
 Una volta che i pod sono in stato di esecuzione, connettiti al database e verifica le operazioni sui dati.
 
+.Mostra esempio
+[%collapsible]
+====
 .Passaggi
 . Inoltra la porta del servizio PostgreSQL alla tua macchina locale:
 +
@@ -312,6 +325,7 @@ SELECT * FROM employees;
 ----
 
 
+====
 
 
 [[video-demonstration]]
@@ -319,5 +333,5 @@ SELECT * FROM employees;
 
 Il seguente video mostra l'installazione di Trident su un cluster Kubernetes vSphere e la distribuzione di un database PostgreSQL con storage persistente utilizzando Trident.
 
-.Distribuire carichi di lavoro su un cluster vSphere Kubernetes Service supportato da storage persistente ONTAP usando Trident
-video::eb8bd0c0-a1fe-4288-a575-b4ac00e004a9[panopto,width=360]
+.Distribuire carichi di lavoro su un cluster VKS supportato da storage persistente ONTAP usando Trident
+video::ea2cd302-d556-4450-bd68-b4c0012a9b49[panopto,width=360]

@@ -14,11 +14,23 @@ summary: Esegui il backup e il ripristino delle applicazioni container in un clu
 
 
 [role="lead"]
-Esegui il backup e il ripristino delle applicazioni container in un cluster vSphere Kubernetes Service (VKS) utilizzando NetApp Console. Questa procedura copre la creazione e la gestione delle operazioni di backup e ripristino tramite Backup and Recovery Service tramite NetApp Console, utilizzando ONTAP S3 object storage come destinazione del backup.
+Esegui il backup e il ripristino delle applicazioni container in un cluster vSphere Kubernetes Service (VKS) usando NetApp Console. Questa procedura copre la creazione e la gestione delle operazioni di backup e ripristino tramite il servizio NetApp Backup and Recovery in NetApp Console.
 
-NetApp Console offre una gestione centralizzata dei servizi di storage e dati in ambienti on-premises e cloud. Offre controllo unificato, semplicità operativa e gestione sicura. Sono disponibili diversi servizi dati e funzionalità di gestione accessibili dall'interfaccia utente su link:https://console.netapp.com["console.netapp.com"^]. Per dettagli completi su NetApp Console, vedi link:https://docs.netapp.com/us-en/console-family/["Documentazione di NetApp Console"].
+Gli esempi coprono i seguenti due scenari di backup e ripristino:
+
+. Backup e ripristino utilizzando ONTAP S3 storage a oggetti come destinazione del backup (flusso di lavoro da disco a oggetto).
+. Esegui backup e ripristino utilizzando ONTAP come destinazione del backup (workflow da disco a disco).
+
+
+
+NOTE: Il backup e il ripristino tramite una policy di fanout 3-2-1 (workflow da disk-to-disk e da disk-to-object) non sono attualmente supportati per i workload VKS.
+
+NetApp Console offre una gestione centralizzata dello storage e dei servizi dati negli ambienti on-premises e cloud. Offre controllo unificato, semplicità operativa e gestione sicura. Diversi servizi dati e funzionalità di gestione sono accessibili dall'interfaccia utente su link:https://console.netapp.com["console.netapp.com"^]. Per dettagli completi su NetApp Console, vedi link:https://docs.netapp.com/us-en/console-family/["Documentazione di NetApp Console"].
 
 Questa sezione si concentra sul servizio dati NetApp Backup and Recovery per i carichi di lavoro Kubernetes, in particolare sulle applicazioni container sui cluster vSphere Kubernetes Service. Il servizio NetApp Backup and Recovery ti permette di individuare, gestire, creare e associare policy di protezione alle tue applicazioni Kubernetes tramite un'unica interfaccia. Per una guida completa, vedi link:https://docs.netapp.com/us-en/data-services-backup-recovery/br-use-kubernetes-protect-overview.html["NetApp Backup and Recovery documentazione"].
+
+
+NOTE: Questa procedura presuppone che tu abbia già distribuito un agente Console nell'ambiente in cui è in esecuzione il tuo cluster VKS. Assicurati che l'agente sia correttamente registrato e visibile in NetApp Console prima di procedere con le operazioni di backup e ripristino.
 
 
 
@@ -33,7 +45,7 @@ Assicurati di aver distribuito un agente Console nell'ambiente in cui è in esec
 .Mostra esempio
 [%collapsible]
 ====
-Nella NetApp Console, fai clic su Deploy Agent come mostrato nello screenshot e distribuisci l'agente nell'ambiente in cui è in esecuzione il cluster VKS.
+Nella NetApp Console, fai clic su *Distribuisci agente* come mostrato nello screenshot e distribuisci l'agente nell'ambiente in cui è in esecuzione il cluster VKS.
 
 In questo esempio, seleziona *On-Premises > Con OVA*, copia l'URL OVA e usa quell'URL in vCenter per distribuire l'agente della Console.
 
@@ -53,12 +65,14 @@ Il cluster ONTAP primario deve essere aggiunto alla NetApp Console e il servizio
 .Mostra esempio
 [%collapsible]
 ====
-Questo passaggio richiede che il vSphere Kubernetes cluster sia in esecuzione e che l'agente della Console sia distribuito nello stesso ambiente. Segui questi passaggi per individuare il vSphere Kubernetes cluster nella NetApp Console.
+Questo passaggio richiede che il vSphere Kubernetes cluster sia in esecuzione e che l'agente della Console sia distribuito nello stesso ambiente.
+
+Segui questi passaggi per individuare il vSphere Kubernetes cluster nella NetApp Console.
 
 .. In NetApp Console, seleziona *Inventory > Kubernetes* e fornisci i dettagli del vSphere Kubernetes cluster.
 .. Seleziona l'agente distribuito nello stesso ambiente in cui si trova il cluster Kubernetes vSphere.
 .. Copia i comandi forniti per installare Trident Protect ed eseguili da una macchina connessa al tuo vSphere Kubernetes cluster.
-.. Dopo aver installato correttamente Trident Protect, fai clic su *Scopri*. NetApp Console rileva il vSphere Kubernetes cluster e tutte le sue risorse tramite l'agente e le visualizza nell'interfaccia utente.
+.. Dopo che Trident Protect è stato installato correttamente, fai clic su *Scopri*. NetApp Console rileva il cluster Kubernetes vSphere e tutte le sue risorse tramite l'agente e le visualizza nell'interfaccia utente.
 
 
 image::vks-console-br-007.png[Scopri il cluster Kubernetes vSphere]
@@ -72,13 +86,13 @@ image::vks-console-br-010.png[Cluster Kubernetes vSphere scoperto in NetApp Cons
 ====
 . *Configura ONTAP S3 come destinazione di backup*
 +
-In questo esempio, utilizzi ONTAP S3 storage a oggetti come destinazione di backup. Puoi anche usare AWS S3, Azure Blob, Google Cloud Storage o StorageGRID come destinazioni di backup.
+In questo esempio, lo storage a oggetti ONTAP S3 viene utilizzato come destinazione di backup. Puoi anche usare AWS S3, Azure Blob, Google Cloud Storage o StorageGRID come destinazioni di backup.
 
 +
 Per ulteriori dettagli, consulta link:https://docs.netapp.com/us-en/data-services-backup-recovery/br-start-setup.html#prepare-the-backup-destination["Documentazione di NetApp Console"].
 
 +
-Per aggiungere ONTAP S3 come destinazione di backup nella NetApp Console, avrai bisogno delle seguenti informazioni dal tuo ONTAP cluster.
+Per aggiungere ONTAP S3 come destinazione di backup in NetApp Console, ti servono le seguenti informazioni dal tuo cluster ONTAP.
 
 +
 [listing]
@@ -129,12 +143,10 @@ image::vks-console-br-006.png[Dettagli dello storage a oggetti ONTAP S3 per la s
 NOTE: Per creare e proteggere un'applicazione Kubernetes, devi avere il ruolo di super admin di NetApp Backup and Recovery o di backup admin di NetApp Backup and Recovery. Per ripristinare un'applicazione Kubernetes, devi avere il ruolo di super admin di NetApp Backup and Recovery o di restore admin di NetApp Backup and Recovery.
 
 +
-.Mostra esempio
+.Mostra esempio: crea un'applicazione per carichi di lavoro container
 [%collapsible]
 ====
 In questo passaggio, crea un'applicazione in NetApp Console per le applicazioni container nel tuo cluster Kubernetes vSphere che devono essere protette. Puoi usare i namespace per creare un'applicazione che protegga tutte le applicazioni container in un namespace nel cluster Kubernetes vSphere.
-
-Avrai anche bisogno di una policy di protezione da associare all'applicazione. Puoi creare una nuova policy di protezione o usarne una esistente.
 
 image::vks-console-br-011.png[Crea applicazione per applicazioni container]
 
@@ -146,7 +158,14 @@ Successivamente, devi fornire le impostazioni di protezione per l'applicazione. 
 
 image::vks-console-br-013.png[Crea una nuova policy di protezione]
 
-Fornisci un nome per la policy e scegli l'architettura di backup. In questo esempio, viene scelta l'opzione "da disco a object storage". Definisci la pianificazione degli snapshot locali, che controlla la frequenza con cui vengono creati gli snapshot sullo storage primario. Poi configura separatamente le impostazioni di backup dell'object storage: scegli la destinazione del backup (in questo esempio, ONTAP S3), imposta la pianificazione del trasferimento che controlla quando i dati degli snapshot vengono copiati nell'object storage e specifica il numero di copie da conservare. La pianificazione del trasferimento è indipendente da quella degli snapshot, quindi le risorse vengono copiate nell'object storage in base alla pianificazione del trasferimento, non immediatamente quando viene creato ogni snapshot. Puoi anche modificare il numero massimo di tentativi e l'intervallo tra i tentativi, se necessario. Fai clic su *Crea* per procedere. L'applicazione verrà rilevata e la policy di protezione verrà associata ad essa.
+====
++
+.Mostra esempio: Creare una policy di protezione utilizzando l'architettura Disk to Object Storage
+[%collapsible]
+====
+Specifica un nome per la policy e scegli l'architettura di backup. In questo esempio, viene scelta l'opzione Disk to Object Storage. Definisci la pianificazione locale degli snapshot, che controlla la frequenza con cui vengono creati gli snapshot sullo storage primario. Poi scegli la destinazione di storage a oggetti per i metadati dell'applicazione Kubernetes utilizzati per gli snapshot.
+
+Successivamente, configura separatamente le impostazioni di backup dello storage a oggetti: scegli la destinazione del backup (in questo esempio, ONTAP S3), imposta la pianificazione del trasferimento che controlla quando i dati degli snapshot vengono copiati nello storage a oggetti e specifica il numero di copie da conservare. La pianificazione del trasferimento è indipendente dalla pianificazione degli snapshot, quindi le risorse vengono copiate nello storage a oggetti in base alla pianificazione del trasferimento, non immediatamente quando viene creato ogni snapshot. Puoi anche modificare il numero massimo di tentativi e l'intervallo tra i tentativi, se necessario. Fai clic su *Create* per procedere. L'applicazione verrà rilevata e la policy di protezione verrà associata ad essa.
 
 image::vks-console-br-014.png[Fornisci il nome della policy di protezione]
 
@@ -159,21 +178,40 @@ image::vks-console-br-017.png[Impostazioni dell'archivio di oggetti per il backu
 image::vks-console-br-018.png[Applicazione creata e protezione completata]
 
 ====
++
+.Mostra esempio: crea una policy di protezione utilizzando l'architettura Disk to Disk
+[%collapsible]
+====
+
+NOTE: Per scegliere l'architettura Disk to Disk, assicurati di aver configurato lo storage secondario con il cluster peering e il peering SVM e di disporre delle credenziali e delle autorizzazioni necessarie.
+
+Specifica un nome per la policy e scegli l'architettura di backup. In questo esempio, viene scelto "Disk to Disk". Definisci la pianificazione degli snapshot locali, che controlla la frequenza con cui vengono creati gli snapshot sullo storage primario. Quindi seleziona la posizione dello storage a oggetti per i metadati dell'applicazione Kubernetes relativi agli snapshot.
+
+Configura separatamente le impostazioni di backup dello storage secondario: scegli la destinazione di backup, il cluster ONTAP e l'SVM configurati per il backup, e l'aggregate in cui verrà creato il volume di backup dall'elenco a discesa. Imposta la pianificazione del trasferimento che controlla quando i dati degli snapshot vengono copiati nello storage secondario e specifica il numero di copie di retention. La pianificazione del trasferimento è indipendente dalla pianificazione degli snapshot, quindi le risorse vengono copiate nella destinazione secondaria in base alla pianificazione del trasferimento, non immediatamente quando viene creato ogni snapshot. Configura anche la destinazione di storage a oggetti dove vengono memorizzati i metadati dell'applicazione delle copie SnapMirror.
+
+Puoi anche modificare il numero massimo di tentativi e l'intervallo tra i tentativi, se necessario. Fai clic su *Crea* per procedere. L'applicazione verrà rilevata e la policy di protezione verrà associata ad essa.
+
+image::vks-console-br-027.png[Fornisci il nome della policy di protezione e seleziona l'architettura di backup]
+
+image::vks-console-br-028.png[Impostazioni snapshot locali]
+
+image::vks-console-br-029.png[Impostazioni di storage secondario per il backup su disco su disco]
+
+====
 . *Ripristina l'applicazione da un backup*
 +
 
 NOTE: Per ripristinare un'applicazione Kubernetes, devi avere il ruolo di super admin di Backup and Recovery o di restore admin di Backup and Recovery.
 
 +
-.Mostra esempio
-[%collapsible]
-====
-** Puoi scegliere qualsiasi punto di ripristino disponibile — un'istantanea locale, un backup su storage a oggetti o un backup da una destinazione secondaria — per ripristinare l'applicazione.
+** Puoi scegliere qualsiasi punto di ripristino disponibile—un'istantanea locale, un backup su storage a oggetti o un backup da una destinazione secondaria—per ripristinare l'applicazione.
 ** Puoi ripristinare l'applicazione nel suo namespace originale o in un namespace diverso.
 ** Puoi selezionare le risorse da includere nel ripristino.
 ** Puoi scegliere la classe di storage da usare per le risorse dell'applicazione ripristinate.
-
-
++
+.Mostra esempio: Ripristina da Object Storage a un namespace diverso
+[%collapsible]
+====
 image::vks-console-br-019.png[Ripristina l'applicazione dal backup]
 
 image::vks-console-br-020.png[Scegli un punto di ripristino]
@@ -184,13 +222,50 @@ image::vks-console-br-022.png[Seleziona tutte o alcune risorse da ripristinare]
 
 image::vks-console-br-023.png[Seleziona la classe di storage per le risorse ripristinate]
 
+====
++
+.Mostra esempio: Ripristina da storage su disco nello stesso namespace
+[%collapsible]
+====
+image::vks-console-br-030.png[Scegli un punto di ripristino]
+
+image::vks-console-br-031.png[Scegli backup su disco secondario e cluster e spazio dei nomi di destinazione]
+
+image::vks-console-br-032.png[Seleziona tutte o alcune risorse da ripristinare]
+
+image::vks-console-br-033.png[Seleziona la classe di storage per le risorse ripristinate]
+
+====
++
 Puoi guardare l'avanzamento del processo di ripristino nella sezione Monitor di NetApp Console. Dopo che il processo di ripristino è stato completato, puoi vedere le risorse ripristinate nel vSphere Kubernetes cluster.
 
++
+.Mostra esempio: Applicazione ripristinata nello stesso namespace o in un namespace diverso
+[%collapsible]
+====
 image::vks-console-br-024.png[Monitora l'avanzamento del processo di ripristino]
 
 image::vks-console-br-025.png[Lavoro di ripristino completato]
 
-image::vks-console-br-026.png[Applicazione ripristinata]
+image::vks-console-br-026.png[Applicazione ripristinata in un namespace diverso]
+
+image::vks-console-br-034.png[Applicazione ripristinata nello stesso namespace]
 
 ====
 
+
+
+
+
+
+[[video-demonstration]]
+== Video dimostrativo
+
+Il seguente video mostra come eseguire il backup dei carichi di lavoro su un cluster VKS nello storage a oggetti ONTAP S3 utilizzando NetApp Console e ripristinarli nel cluster Kubernetes vSphere.
+
+.Esegui il backup dei carichi di lavoro su un cluster VKS in Object Store e ripristinali usando la NetApp Console
+video::02f61f3c-ae52-4f0b-9fe7-b4c0012ac7d8[panopto,width=360]
+Il seguente video mostra una panoramica delle funzionalità di NetApp Console Local.
+
+.NetApp Console Panoramica locale
+video::5a0bdd54-7d38-494a-a224-b4b60011547f[panopto,width=360]
