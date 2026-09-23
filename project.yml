@@ -19,10 +19,10 @@ sidebar:
     url: "/index.html"
   - title: Cosa c'è di nuovo
     url: "/whats-new.html"
-  - section: anthos
+  - section: vsphere-kubernetes-service
   - section: openshift
   - section: openshift-aws
-  - section: vsphere-kubernetes-service
+  - section: anthos
   - title: Video
     url: "/videos/index.html"
     entries:
